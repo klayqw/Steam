@@ -1,0 +1,7 @@
+create TABLE Forum(
+    [Id] int primary key IDENTITY(1,1),
+    [Title] NVARCHAR(max),
+    [Description] NVARCHAR(max),
+    [Like] int,
+    [Dislike] int,
+)
