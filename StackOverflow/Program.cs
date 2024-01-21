@@ -1,3 +1,5 @@
+using StackOverflow.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,7 +7,10 @@ builder.Services.AddControllersWithViews();
 
 string myDb1ConnectionString = builder.Configuration.GetConnectionString("ForumBase");
 
-builder.Services.AddSingleton<string>(myDb1ConnectionString);
+builder.Services.AddScoped<IForumRepository>(e =>
+{
+    return new ForumSqlRepository(myDb1ConnectionString);
+});
 
 var app = builder.Build();
 

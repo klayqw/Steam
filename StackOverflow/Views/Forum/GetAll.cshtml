@@ -1,0 +1,16 @@
+﻿@model List<Forum>
+@{
+    ViewData["Title"] = "Get All";
+}
+
+
+@foreach(var forum in base.Model)
+{
+    <div class="card">
+        <h5 class="card-header">@forum.Title</h5>
+        <div class="card-body">
+            <h5 class="card-title">@forum.Description</h5>
+            <p class="card-text">@forum.Like , @forum.Dislike</p>
+        </div>
+    </div>
+}
