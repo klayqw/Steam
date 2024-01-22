@@ -52,18 +52,26 @@ public class ForumController : Controller
     {
         return View();
     }
-    [HttpPut]
+    [HttpPut,HttpPost]
     [ActionName("Update")]
-    public async Task<IActionResult> UpdateForumAsync([FromBody]ForumDto Dto,int id)
+    public async Task<IActionResult> UpdateForumAsync([FromForm]ForumDto Dto)
     {
+        Console.WriteLine(Dto.Id);
         await sqlstorage.UpdateAsync(new Forum()
         {
             Title = Dto.Title,
             Description = Dto.Description,
             Like = Dto.Like,
             Dislike = Dto.Dislike,
-        },id);
-        return Ok();
+        },Dto.Id);
+        return Redirect("/");
+    }
+
+    [HttpGet]
+    [ActionName("Update")]
+    public async Task<IActionResult> UpdateForumAsync()
+    {
+        return View();
     }
 
     [ActionName("GetById")]
@@ -71,12 +79,20 @@ public class ForumController : Controller
     {
         return View();
     }
-    [HttpDelete]
+    [HttpDelete,HttpPost]
     [ActionName("Delete")]
     public async Task<IActionResult> DeleteForumAsync(int id)
     {
         await sqlstorage.DeleteAsync(id);
-        return Ok();
+        return Redirect("/");
+    }
+
+    [HttpGet]
+    [ActionName("Delete")]
+    public async Task<IActionResult> DeleteForumAsync()
+    {
+        
+        return View();
     }
 
 }
