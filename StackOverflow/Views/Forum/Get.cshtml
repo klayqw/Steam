@@ -1,0 +1,13 @@
+﻿@model Forum
+@{
+}
+
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">Id:@Model.Id</h5>
+        <h5 class="card-title">Title:@Model.Title</h5>
+        <p class="card-text">Desc:@Model.Description</p>
+        <p class="card-text">Like:@Model.Like, Dislike:@Model.Dislike</p>
+        <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Back</a>
+    </div>
+</div>

@@ -6,13 +6,12 @@ create TABLE Forum(
     [Dislike] int,
 )
 
-
-create table Log(
-    [log-id] int primary key IDENTITY(1,1),
-    [userid] NVARCHAR(max),
-    [url] NVARCHAR(max),
-    [method-type] NVARCHAR(max),
-    [status-code] int,
-    [request body] NVARCHAR(max),
-    [response body] NVARCHAR(max),
-)
+CREATE TABLE [Log](
+    log_id INT PRIMARY KEY IDENTITY(1,1),
+    userid INT,
+    url NVARCHAR(MAX),
+    method_type NVARCHAR(MAX),
+    status_code INT,
+    request_body NVARCHAR(MAX),
+    response_body NVARCHAR(MAX)
+);

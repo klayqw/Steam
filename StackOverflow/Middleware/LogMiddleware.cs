@@ -21,10 +21,10 @@ public class LogMiddleware
         if(IsOn == false)
         {
              await next.Invoke(httpContext);
+             return;
         }
         var requestbody = string.Empty;
         var responsebody = string.Empty;
-        Console.WriteLine(httpContext.Request.Body.CanWrite);
         if (httpContext.Request.Body.CanRead)
         {
             using (StreamReader reader = new StreamReader(httpContext.Request.Body))
@@ -50,5 +50,6 @@ public class LogMiddleware
             response_body = responsebody,
         });
         await next.Invoke(httpContext);
+        return;
     }
 }
