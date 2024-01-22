@@ -5,3 +5,14 @@ create TABLE Forum(
     [Like] int,
     [Dislike] int,
 )
+
+
+create table Log(
+    [log-id] int primary key IDENTITY(1,1),
+    [userid] NVARCHAR(max),
+    [url] NVARCHAR(max),
+    [method-type] NVARCHAR(max),
+    [status-code] int,
+    [request body] NVARCHAR(max),
+    [response body] NVARCHAR(max),
+)

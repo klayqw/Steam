@@ -1,3 +1,6 @@
+using StackOverflow.Middleware;
+using StackOverflow.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +9,7 @@ builder.Services.AddControllersWithViews();
 string myDb1ConnectionString = builder.Configuration.GetConnectionString("ForumBase");
 
 builder.Services.AddSingleton<string>(myDb1ConnectionString);
+builder.Services.AddSingleton<ILogRepository>(e => new LogSqlServices(myDb1ConnectionString));
 
 var app = builder.Build();
 
@@ -23,6 +27,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseMiddleware<LogMiddleware>();
 
 app.MapControllerRoute(
     name: "default",
