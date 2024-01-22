@@ -7,10 +7,11 @@
 @foreach(var forum in base.Model)
 {
     <div class="card">
-        <h5 class="card-header">@forum.Title</h5>
+        <h5 class="card-header">Id:@forum.Id</h5>
+        <h5 class="card-header">Title:@forum.Title</h5>
         <div class="card-body">
-            <h5 class="card-title">@forum.Description</h5>
-            <p class="card-text">@forum.Like , @forum.Dislike</p>
+            <h5 class="card-title">Desc:@forum.Description</h5>
+            <p class="card-text">Like and Dislike:@forum.Like , @forum.Dislike</p>
         </div>
     </div>
 }
