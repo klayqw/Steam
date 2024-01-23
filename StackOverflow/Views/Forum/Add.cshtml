@@ -1,0 +1,24 @@
+﻿@{
+    var Title = string.Empty;
+    var Description = string.Empty;
+    var Like = 0;
+    var Dislike = 0;
+}
+
+<form method="post" asp-controller="Forum" asp-action="Add">
+    <div class="mb-3">
+        <label asp-for="@Title" class="form-label">Title</label>
+        <input type="text" class="form-control" asp-for="@Title">
+    </div>
+    <div class="mb-3">
+        <label asp-for="@Description" class="form-label">Description</label>
+        <input type="text" class="form-control" asp-for="@Description">
+    </div>
+    <div style="display: none;">
+        <label asp-for="@Like" class="form-label">Title</label>
+        <input type="text" class="form-control" asp-for="@Title" value="0">
+        <label asp-for="@Dislike" class="form-label">Title</label>
+        <input type="text" class="form-control" asp-for="@Title" value="0">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
