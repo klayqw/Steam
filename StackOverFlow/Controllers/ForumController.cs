@@ -3,6 +3,7 @@ using StackOverFlow.Dto;
 using StackOverFlow.Services.Base;
 using StackOverFlow.Models;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Hosting.Server;
 
 namespace StackOverFlow.Controllers;
 
@@ -37,5 +38,22 @@ public class ForumController : Controller
             return BadRequest(ex.Message);
         }
         return Created(base.Request.GetDisplayUrl(),"Created!");
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        List<Forum> list;
+        try
+        {
+            var result = await forumRepository.GetAll();
+            list = result.ToList();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500);
+        }
+
+        return View(list);
     }
 }

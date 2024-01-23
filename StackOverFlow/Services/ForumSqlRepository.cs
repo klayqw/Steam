@@ -25,4 +25,19 @@ public class ForumSqlRepository : IForumRepository
             throw new Exception(ex.Message);
         }
     }
+
+    public async Task<IEnumerable<Forum>> GetAll()
+    {
+        using SqlConnection sqlConnection = new SqlConnection(Connection);
+        IEnumerable<Forum> result;
+        try
+        {
+            result = await sqlConnection.QueryAsync<Forum>("select * from Forum");
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+        return result;
+    }
 }
