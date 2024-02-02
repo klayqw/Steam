@@ -1,7 +1,15 @@
+using Steam.Services;
+using Steam.Services.Base;
+using System.Data.SqlClient;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+var connection = builder.Configuration.GetConnectionString("SteamBase");
+
+builder.Services.AddScoped<ILogRepository>(e => new LogSqlRepository(new SqlConnection(connection)));
 
 var app = builder.Build();
 
