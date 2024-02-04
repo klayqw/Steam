@@ -1,3 +1,4 @@
+using Steam.Middleware;
 using Steam.Services;
 using Steam.Services.Base;
 using System.Data.SqlClient;
@@ -27,6 +28,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseMiddleware<LogsMiddleware>();
 
 app.MapControllerRoute(
     name: "default",
