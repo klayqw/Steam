@@ -1,0 +1,18 @@
+﻿@{
+    var Title = string.Empty;
+    var Description = string.Empty;
+}
+
+<form method="post" asp-action="Add" asp-controller="Forum">   
+    <div class="mb-3">
+        <label asp-for="@Title" class="form-label">Title</label>
+        <input type="text" class="form-control" asp-for="@Title">
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="@Description" class="form-label">Description</label>
+        <input type="text" class="form-control" asp-for="@Description">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
