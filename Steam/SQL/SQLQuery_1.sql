@@ -9,15 +9,15 @@ create table Logs(
     [MethodType] nvarchar(10),
     [StatusCode] nvarchar(10),
     [RequestBody] NVARCHAR(max),
-    [ResposneBody] NVARCHAR(max)
+    [ResponseBody] NVARCHAR(max)
 )
 
 
 create table Users(
     [Id] int PRIMARY key IDENTITY,
-    [Login] NVARCHAR(20),
-    [Password] NVARCHAR(20),
-    [Email] NVARCHAR(50),
+    [Login] NVARCHAR(20) not null,
+    [Password] NVARCHAR(20) not null,
+    [Email] NVARCHAR(50) not null,
 )
 
 select * from Logs
