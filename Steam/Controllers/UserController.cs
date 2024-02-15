@@ -34,17 +34,25 @@ public class UserController : Controller
     [HttpPost]
     public async Task<IActionResult> Login(UserDto dto)
     {
-        var user = await _userRepository.FindAsync(dto.Login, dto.Password);
-        if(user is null)
+        try
         {
-            return BadRequest("Incorrect Login or Password");
+            var user = await _userRepository.FindAsync(dto.Login, dto.Password);
+            if (user is null)
+            {
+                return BadRequest("Incorrect Login or Password");
+            }
+            else
+            {
+                var protected_data = dataProtector.Protect(user.Id.ToString());
+                base.HttpContext.Response.Cookies.Append("Authorize", $"{protected_data}");
+                return Redirect("/");
+            }
         }
-        else
+        catch(Exception ex)
         {
-            var protected_data = dataProtector.Protect(user.Id.ToString());
-            base.HttpContext.Response.Cookies.Append("Authorize", $"{protected_data}");
-            return Redirect("/");
+            return BadRequest(ex.Message);
         }
+       
     }
 
     [HttpGet]

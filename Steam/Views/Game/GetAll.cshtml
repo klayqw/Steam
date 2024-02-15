@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Game>
+@{
+    ViewData["Title"] = "GetAll";
+}
+
+@if(base.Model.Any() == false || base.Model is null)
+{
+    <div>
+        "No games in the base..."
+    </div>
+}
+else
+{
+    @foreach(var item in Model)
+    {
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">@item.Title</h5>
+                <p class="card-text">@item.Description</p>
+                <p class="card-text">Price: @item.Price</p>
+                <a asp-action="GetById" asp-controller="Game" asp-route-id="@item.Id">Go to know more</a>
+            </div>
+        </div>
+    }
+}
+
+<a asp-action="Index" asp-controller="Home">Back</a>
