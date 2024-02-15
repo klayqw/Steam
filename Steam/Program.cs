@@ -7,10 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDataProtection();
 
 var connection = builder.Configuration.GetConnectionString("SteamBase");
 
 builder.Services.AddScoped<ILogRepository>(e => new LogSqlRepository(new SqlConnection(connection)));
+builder.Services.AddScoped<IUserRepositoryBase>(e => new UserSqlRepository(new SqlConnection(connection)));
 
 var app = builder.Build();
 

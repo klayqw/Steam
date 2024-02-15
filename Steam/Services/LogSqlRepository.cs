@@ -17,15 +17,13 @@ namespace Steam.Services
         public async Task Add(Log log)
         {
             await Connection.ExecuteAsync(
-                @"INSERT INTO Logs ([UserId], [Url], [MethodType], [StatusCode], [RequestBody], [ResponseBody])
-                values(@UserId,@Url,@MethodType,@StatusCode,@RequestBody,@ResponseBody)",
+                @"INSERT INTO Logs ([UserId], [Url], [MethodType], [StatusCode])
+                values(@UserId,@Url,@MethodType,@StatusCode)",
                 new {
                     log.UserId,
                     log.Url,
                     log.MethodType,
                     log.StatusCode,
-                    log.ResponseBody,
-                    log.RequestBody,
                 });
 
         }

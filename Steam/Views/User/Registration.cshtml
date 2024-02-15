@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Registration";
+    string Login = string.Empty;
+    string Password = string.Empty;
+    string Email = string.Empty;
+}
+
+<form method="post" asp-action="Registration" asp-controller="User">
+    <div class="mb-3">
+        <label asp-for="@Login" class="form-label">Login</label>
+        <input type="text" class="form-control" asp-for="@Login">
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="@Password" class="form-label">Password</label>
+        <input type="password" class="form-control" asp-for="@Password">
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="@Email" class="form-label">Email</label>
+        <input type="email" class="form-control" asp-for="@Email">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <a asp-action="Index" asp-controller="Home">Back</a>
+</form>
