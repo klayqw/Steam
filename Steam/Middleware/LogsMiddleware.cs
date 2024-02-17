@@ -1,14 +1,6 @@
-﻿using static System.Net.Mime.MediaTypeNames;
-using System.Net;
-using Steam.Services.Base;
-using Steam.Services;
-using System;
+﻿using Steam.Services.Base;
 using Steam.Models;
 using Microsoft.AspNetCore.Http.Extensions;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.AspNetCore.Http;
-using System.Xml.Linq;
 using Microsoft.AspNetCore.DataProtection;
 
 namespace Steam.Middleware;
@@ -16,6 +8,7 @@ public class LogsMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly IDataProtector dataProtector;
+    public static bool IsOn = true;
 
     public LogsMiddleware(RequestDelegate next, IDataProtectionProvider dataProtectionProvider)
     {
@@ -24,6 +17,11 @@ public class LogsMiddleware
     }
     public async Task InvokeAsync(HttpContext httpContext, ILogRepository logger)
     {
+        if (IsOn == false)
+        {
+            await _next(httpContext);
+            return;
+        }
         var id = httpContext.Request.Cookies["Authorize"] == null ? "undefind" : dataProtector.Unprotect(httpContext.Request.Cookies["Authorize"]);
 
         var log = new Log()
