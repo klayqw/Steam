@@ -1,0 +1,30 @@
+﻿@model User
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">Id: @Model.Id</h5>
+    <p class="card-text">Login: @Model.Login</p>
+    <p class="card-text">Login: @Model.Email</p>
+  </div>
+</div>
+<p class="card-text">Games: </p>
+
+@if (Model.Games.Any() == false)
+{
+    <p>Nothing in libary..</p>
+}
+@foreach(var item in Model.Games)
+{
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Title: @item.Title</h5>
+            <p class="card-text">Description: @item.Description</p>
+            <p class="card-text">Price: @item.Price</p>
+            <p class="card-text">Price: @item.Genre</p>
+        </div>
+    </div>
+}
+<a asp-action="GetAll" asp-controller="Game" class="btn btn-primary">Back</a>
