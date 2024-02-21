@@ -10,12 +10,13 @@ create table Logs(
     [StatusCode] nvarchar(10),
 )
 
+drop table Users
+
 create table Users(
     [Id] int PRIMARY key IDENTITY,
     [Login] NVARCHAR(20) not null,
     [Password] NVARCHAR(20) not null,
     [Email] NVARCHAR(50) not null,
-    [GameId] INT FOREIGN KEY REFERENCES Games(Id)
 )
 
 

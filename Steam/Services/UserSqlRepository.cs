@@ -29,19 +29,19 @@ public class UserSqlRepository : IUserRepositoryBase
     {
         login = login.ToLower();
         password = password.ToLower();
-        var result = await _connection.QueryFirstOrDefaultAsync<User>("select * from Users where Login=@Login and Password=@Password", new { Login = login, Password = password});
+        var result = await _connection.QueryFirstOrDefaultAsync<User>("select * from Users WHERE Login = @Login and Password = @Password", new { Login = login, Password = password });
         return result;
     }
 
     public async Task<User> GetAsync(int id)
     {
-        var result = await _connection.QueryFirstAsync<User>("SELECT u.*, g.* FROM Users u JOIN Games g ON u.GameId = g.Id WHERE u.Id = @Id;", new { Id = id });
+        var result = await _connection.QueryFirstAsync<User>("select * from Users WHERE Id = @Id", new { Id = id });
         return result;
     }
-
-    public async Task AddGameAsync(int gameid, int id)
+    public async Task<User> FindByLoginAsync(string login)
     {
-        var result = await _connection.ExecuteAsync("UPDATE Users SET GameId = @gameid WHERE Id = @id;", new {id , gameid});
-        return;
+        login = login.ToLower();
+        var result = await _connection.QueryFirstOrDefaultAsync<User>("select * from Users WHERE Login = @Login", new { Login = login});
+        return result;
     }
 }

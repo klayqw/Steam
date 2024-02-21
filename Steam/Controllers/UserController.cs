@@ -16,12 +16,9 @@ using System.Xml;
 public class UserController : Controller
 {
     private readonly IUserRepositoryBase _userRepository;
-    private readonly IDataProtector dataProtector;
     private readonly ILogger<UserController> _logger;
-    private static User user;
-    public UserController(IUserRepositoryBase userRepository, ILogger<UserController> logger, IDataProtectionProvider dataProtectionProvider)
+    public UserController(IUserRepositoryBase userRepository, ILogger<UserController> logger)
     {
-        this.dataProtector = dataProtectionProvider.CreateProtector("keytouser");
         this._userRepository = userRepository;
         _logger = logger;
     }
@@ -52,12 +49,10 @@ public class UserController : Controller
     {
 
         var result = await _userRepository.FindAsync(dto.Login,dto.Password);
-        Console.WriteLine(result);
         if(result == null)
         {
             return BadRequest();
         }
-        user = result;
         var claims = new List<Claim> {
                 new(ClaimTypes.Name, result.Login),
                 new(ClaimTypes.Email,result.Email),
@@ -108,30 +103,13 @@ public class UserController : Controller
         return Redirect("/");
 
     }
-
-    [HttpPost]
-    [Authorize]
-    [ActionName("Add")]
-    public async Task<IActionResult> AddGameToUserLibary(int gameid)
-    {
-        try
-        {
-            await _userRepository.AddGameAsync(gameid,user.Id);
-
-        }
-        catch(Exception ex)
-        {
-            return StatusCode(500,ex.Message);
-        }
-        return RedirectToAction("Profile");
-    }
-
     [HttpGet]
     [Authorize]
     [ActionName("Profile")]
-    public IActionResult Profile()
+    public async Task<IActionResult> Profile()
     {
-        Console.WriteLine(user);
+        var user = await _userRepository.FindByLoginAsync(base.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value);
         return View(user);
     }
+   
 }
