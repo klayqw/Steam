@@ -20,5 +20,16 @@ create table Users(
     [Email] NVARCHAR(50) not null,
 )
 
+create table Games(
+    [Id] int PRIMARY KEY IDENTITY,
+    [Title] NVARCHAR(50) not null,
+    [Description] NVARCHAR(max) not null,
+    [Devoloper] NVARCHAR(100) not null,
+    [Publisher] NVARCHAR(100) not null,
+    [Price] FLOAT not null,
+    [ReleaseDate] datetime not null,
+    [Genre] NVARCHAR(100) not null,
+)
+
 select * from Logs
 select * from Users
