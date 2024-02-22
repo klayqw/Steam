@@ -16,6 +16,7 @@ var connection = builder.Configuration.GetConnectionString("SteamBase");
 builder.Services.AddScoped<ILogRepository>(e => new LogSqlRepository(new SqlConnection(connection)));
 builder.Services.AddScoped<IUserRepositoryBase>(e => new UserSqlRepository(new SqlConnection(connection)));
 builder.Services.AddScoped<IGameRepository>(e => new GameSqlRepository(new SqlConnection(connection)));
+builder.Services.AddScoped<IUserGamesRepository>(e => new UserGameRepository(new SqlConnection(connection)));
 
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

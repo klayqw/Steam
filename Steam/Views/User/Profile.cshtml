@@ -4,12 +4,30 @@
 }
 
 <div class="card" style="width: 18rem;">
-  <div class="card-body">
-    <h5 class="card-title">Id: @Model.Id</h5>
-    <p class="card-text">Login: @Model.Login</p>
-    <p class="card-text">Email: @Model.Email</p>
-  </div>
+    <div class="card-body">
+        <h5 class="card-title">Id: @Model.Id</h5>
+        <p class="card-text">Login: @Model.Login</p>
+        <p class="card-text">Email: @Model.Email</p>
+    </div>
 </div>
-
+<p>Games:</p>
+@if (Model.Games is null || Model.Games.Any() == false)
+{
+    <p>No games here now...</p>
+}
+else
+{
+    foreach(var item in Model.Games)
+    {
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Id: @item.Id</h5>
+                <p class="card-text">Title: @item.Title</p>
+                <p class="card-text">Description: @item.Description</p>
+                <p class="card-text">Devoloper: @item.Devoloper</p>
+            </div>
+        </div>
+    }
+}
 
 <a asp-action="GetAll" asp-controller="Game" class="btn btn-primary">Back</a>

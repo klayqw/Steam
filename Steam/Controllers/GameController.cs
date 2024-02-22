@@ -68,7 +68,7 @@ public class GameController : Controller
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return RedirectToAction("Error", "Error", new { message = ex.Message });
         }
         return RedirectToAction("GetAll");
     }

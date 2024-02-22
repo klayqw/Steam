@@ -22,6 +22,7 @@ create table Users(
 
 drop table Games
 
+
 create table Games(
     [Id] int PRIMARY KEY IDENTITY,
     [Title] NVARCHAR(50) not null,
@@ -31,6 +32,12 @@ create table Games(
     [Price] FLOAT not null,
     [ReleaseDate] datetime not null,
     [Genre] NVARCHAR(100) not null,
+)
+
+CREATE TABLE UsersGames (
+    [Id] int PRIMARY KEY,
+    [UserId] int FOREIGN KEY REFERENCES Users(Id),
+    [GameId] int FOREIGN KEY REFERENCES Games(Id),
 )
 
 select * from Logs

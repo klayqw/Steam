@@ -16,10 +16,12 @@ using System.Xml;
 public class UserController : Controller
 {
     private readonly IUserRepositoryBase _userRepository;
+    private readonly IUserGamesRepository _userGameRepository;
     private readonly ILogger<UserController> _logger;
-    public UserController(IUserRepositoryBase userRepository, ILogger<UserController> logger)
+    public UserController(IUserRepositoryBase userRepository, ILogger<UserController> logger, IUserGamesRepository _userGameRepository)
     {
         this._userRepository = userRepository;
+        this._userGameRepository = _userGameRepository;
         _logger = logger;
     }
 
@@ -51,7 +53,7 @@ public class UserController : Controller
         var result = await _userRepository.FindAsync(dto.Login,dto.Password);
         if(result == null)
         {
-            return BadRequest();
+            return RedirectToAction("Error", "Error", new { message = "Password or Login is incorrect" });
         }
         var claims = new List<Claim> {
                 new(ClaimTypes.Name, result.Login),
@@ -89,7 +91,7 @@ public class UserController : Controller
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return RedirectToAction("Error", "Error", new { message = ex.Message });
         }
         return RedirectToAction("Login");
     }
@@ -109,6 +111,7 @@ public class UserController : Controller
     public async Task<IActionResult> Profile()
     {
         var user = await _userRepository.FindByLoginAsync(base.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value);
+        user.Games = await _userGameRepository.GetUserGames(user.Id);
         return View(user);
     }
    

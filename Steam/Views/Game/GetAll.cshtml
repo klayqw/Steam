@@ -19,6 +19,9 @@ else
                 <p class="card-text">@item.Description</p>
                 <p class="card-text">Price: @item.Price</p>
                 <a asp-action="GetById" asp-controller="Game" asp-route-id="@item.Id">Go to know more</a>
+                <form method="post" asp-controller="UserGames" asp-action="AddToLibary" asp-route-gameId="@item.Id" >
+                    <button type="submit" class="btn btn-primary">Add to your Libary</button>
+                </form>
             </div>
         </div>
     }
