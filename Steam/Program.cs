@@ -1,12 +1,23 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Steam.Data;
 using System.Data.SqlClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDataProtection();
+builder.Services.AddAuthorization();
 
-var connection = builder.Configuration.GetConnectionString("SteamBase");
+
+builder.Services.AddDbContext<SteamDBContext>(dbContextOptionsBuilder => {
+    var connectionString = builder.Configuration.GetConnectionString("SteamBase");
+    dbContextOptionsBuilder.UseSqlServer(connectionString);
+});
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
+    options.Password.RequiredLength = 8;
+}).AddEntityFrameworkStores<SteamDBContext>();
 
 var app = builder.Build();
 
@@ -23,6 +34,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
