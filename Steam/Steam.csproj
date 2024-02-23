@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dto\" />
     <Folder Include="Middleware\" />
     <Folder Include="Services\Base\" />
   </ItemGroup>

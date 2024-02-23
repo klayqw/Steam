@@ -21,5 +21,5 @@ public class Game
     [Required]
     public string Genre { get; set; }
     public ICollection<UserGames> UserGames { get; set; }
-
+    public ICollection<Comment> CommentGames { get; set; }
 }
