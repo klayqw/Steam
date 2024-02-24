@@ -1,4 +1,11 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿async function showGameDetails() {
+    fetch('', { method: "GET" })
+}
 
-// Write your JavaScript code.
+async function Back() {
+    console.log(1)
+    await fetch('/', { method: "GET" })
+        .then(data => {
+          window.location.href = '/';
+    })
+}

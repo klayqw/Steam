@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Add";
+    var dto = new GameAddDTO();
+}
+
+<form asp-action="Add" asp-controller="Game" method="post">
+    <div class="mb-3">
+        <label class="form-label" asp-for="@dto.GameImageUrl">Image url</label>
+        <input type="text" class="form-control" asp-for="@dto.GameImageUrl">
+    </div>
+    <div class="mb-3">
+        <label asp-for="@dto.Title" class="form-label">Title</label>
+        <input type="text" asp-for="@dto.Title" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label asp-for="@dto.Description" class="form-label">Description</label>
+        <input type="text" asp-for="@dto.Description" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label asp-for="@dto.Devoloper" class="form-label">Devoloper</label>
+        <input type="text" asp-for="@dto.Devoloper" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label asp-for="@dto.Publisher" class="form-label">Publisher</label>
+        <input type="text" asp-for="@dto.Publisher" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label asp-for="@dto.Price" class="form-label">Price</label>
+        <input type="text" asp-for="@dto.Price" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label asp-for="@dto.ReleaseDate" class="form-label">ReleaseDate</label>
+        <input type="date" asp-for="@dto.ReleaseDate" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label asp-for="@dto.Genre" class="form-label">Genre</label>
+        <input type="text" asp-for="@dto.Genre" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<button onclick="Back()" class="btn btn-primary">Back</button>

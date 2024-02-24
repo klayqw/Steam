@@ -4,4 +4,25 @@
 }
 
 
-
+<div class="d-inline-flex p-2">
+@if(Model is null || Model.Any() == false)
+{
+    <p>Nothing is here..</p>
+}
+else
+{
+    foreach(var item in Model)
+    {
+        <div class="card" style="width: 18rem;" onclick="showGameDetails()">
+            <img src="@item.GameImageUrl" class="card-img-top" alt="Game Image">
+            <div class="card-body">
+                <h5 class="card-title">@item.Title</h5>
+                <p class="card-text">@item.Description</p>
+                <p class="card-text">@item.Price</p>
+                <a href="#" class="btn btn-primary"></a>
+            </div>
+        </div>
+    }
+}
+</div>
+<button class="btn btn-primary" onclick="Back()">Back</button>

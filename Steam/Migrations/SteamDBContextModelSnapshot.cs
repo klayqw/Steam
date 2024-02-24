@@ -246,10 +246,7 @@ namespace Steam.Migrations
                     b.Property<DateTime>("Time")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId1")
+                    b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -257,7 +254,7 @@ namespace Steam.Migrations
 
                     b.HasIndex("GameId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Comment");
                 });
@@ -275,6 +272,10 @@ namespace Steam.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Devoloper")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GameImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -310,6 +311,10 @@ namespace Steam.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GroupImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -554,7 +559,7 @@ namespace Steam.Migrations
 
                     b.HasOne("Steam.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId1")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
