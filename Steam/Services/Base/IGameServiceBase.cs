@@ -11,4 +11,5 @@ public interface IGameServiceBase
     public Task<IEnumerable<Game>> GetAll();
     public Task<IActionResult> Update(int id,GameDto gameAddDTO);
     public Task Delete(int id);
+    public Task<IActionResult> Buy(string id, int gameid);
 }

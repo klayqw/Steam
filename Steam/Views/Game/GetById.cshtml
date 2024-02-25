@@ -16,7 +16,7 @@
             <p class="card-text">Price: @Model.Price</p>
             <p class="card-text">Release Date: @Model.ReleaseDate.ToShortDateString()</p>
             <p class="card-text">Genre: @Model.Genre</p>
-            <button type="button" class="btn btn-primary">Buy</button>
+            <button type="button" class="btn btn-primary" onclick="Buy(@Model.Id)">Buy</button>
             <button type="button" class="btn btn-primary" onclick="Back('/Game/GetAll')">Back</button>
         </div>
     </div>

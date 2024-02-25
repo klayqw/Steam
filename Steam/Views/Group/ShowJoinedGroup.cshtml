@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Group>
+@{
+    ViewData["Title"] = "My Groups";
+}
+@if(Model is null || Model.Any() == false)
+{
+    <p>Nothing is here..</p>
+}
+else
+{
+    <div class="d-inline-flex p-2">
+        @foreach(var item in Model)
+        {
+        <div>
+                <div class="card" style="width: 18rem;" onclick="showGroupDetail(@item.Id)" style="max-height: 200px;">
+                <img src="@item.GroupImageUrl" class="card-img-top" alt="Game Image" style="max-height:200px">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Name</h5>
+                    <p class="card-text">@item.Description</p>
+                    <p class="card-text">@item.Creator</p>
+                </div>
+            </div>
+            <div>
+                    <button class="btn btn-primary" onclick="Leave(@item.Id)">Leave</button>
+            </div>
+            @if (User.IsInRole("Admin"))
+            {
+                <div>
+                        <button class="btn btn-primary" onclick="DeleteGroup(@item.Id)">Delete</button>
+                        <button class="btn btn-primary" onclick="UpdateGroupView(@item.Id)">Update</button>
+                </div>
+            }
+            
+        </div>
+        }
+    </div>
+}
+
+<div>
+    <button class="btn btn-primary" onclick="Back('/Group/GetAll')">Back</button>
+</div>

@@ -1,11 +1,83 @@
 ﻿async function showGameDetails(id = 0) {
-    fetch('/Game/GetById', { method: "GET" })
+    await fetch('/Game/GetById?id=' + id, { method: "GET" })
     .then(data => {
         window.location.href = '/Game/GetById?id=' + id;
     })
 }
 
+async function Buy(id) {
+    await fetch('/Game/Buy?id=' + id, { method: "POST" })
+        .then(data => {
+            window.location.href = '/User/Profile';
+        })
+}
 
+async function UpdateGroupView(id) {
+    await fetch('/Group/Update?id=' + id, { method: "GET" })
+        .then(data => {
+            window.location.href = '/Group/Update?id=' + id;
+        })
+}
+
+async function UpdateGroup(id) {
+    event.preventDefault();
+    var data = $("#updateGroupContainer").serializeArray().reduce(function (obj, item) {
+        obj[item.name] = item.value;
+        return obj;
+    }, {});
+    var jsonBody = JSON.stringify(data);
+    console.log(jsonBody)
+
+    await fetch('/Group/Update?id=' + id, {
+        method: "PUT",
+        body: jsonBody,
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(data => {
+            window.location.href = '/Group/GetAll';
+        });
+}
+
+async function DeleteGroup(id) {
+    await fetch('/Group/DeleteGroup?id=' + id, { method: "DELETE" })
+        .then(data => {
+            window.location.href = '/Group/GetAll';
+        })
+}
+async function Leave(id) {
+    await fetch('/Group/Leave?id=' + id, { method: "DELETE" })
+        .then(data => {
+            window.location.href = '/Group/ShowJoinedGroup';
+        })
+}
+async function JoinIn(id) {
+    await fetch('/Group/JoinIn?id=' + id, { method: "POST" })
+        .then(data => {
+            window.location.href = '/Group/GetAll';
+        })
+}
+async function AddGroup() {
+    await fetch('/Group/Add', { method: "GET" })
+        .then(data => {
+            window.location.href = '/Group/Add';
+        })
+}
+
+async function ShowGroup() {
+    await fetch('/Group/GetUserGroup', { method: "GET" })
+        .then(data => {
+            window.location.href = '/Group/GetUserGroup';
+        })
+}
+
+async function showGroupDetail(id) {
+    await fetch('/Group/GetById?id=' + id, { method: "GET" })
+        .then(data => {
+            window.location.href = '/Group/GetById?id=' + id;
+        })
+}
 
 async function Back(url = '/') {
     await fetch(url, { method: "GET" })
@@ -15,7 +87,7 @@ async function Back(url = '/') {
 }
 
 async function showWorkShopDetails(id = 0) {
-    await fetch('/WorkShop/GetById', { method: "GET" })
+    await fetch('/WorkShop/GetById?id=' + id, { method: "GET" })
         .then(data => {
             window.location.href = '/WorkShop/GetById?id=' + id;
         })

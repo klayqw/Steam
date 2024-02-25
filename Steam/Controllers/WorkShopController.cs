@@ -10,11 +10,9 @@ namespace Steam.Controllers;
 public class WorkShopController : Controller
 {
     private readonly IWorkShopServiceBase _workShopService;
-    private readonly UserManager<IdentityUser> userManager;
-    public WorkShopController(IWorkShopServiceBase workShopService, UserManager<IdentityUser> userManager)
+    public WorkShopController(IWorkShopServiceBase workShopService)
     {
         _workShopService = workShopService;
-        this.userManager = userManager;
     }
 
     [HttpGet]
@@ -105,4 +103,5 @@ public class WorkShopController : Controller
         await _workShopService.UnFollow(id, userId);
         return RedirectToAction("ShowSub");
     }
+   
 }

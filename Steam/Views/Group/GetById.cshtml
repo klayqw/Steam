@@ -1,0 +1,19 @@
+﻿@model Group
+@{
+    ViewData["Title"] = "All Info";
+}
+
+<div class="row">
+    <div class="col-3">
+        <img src="@Model.GroupImageUrl" class="img-fluid" alt="Game Image" style="max-height: 400px;">
+    </div>
+    <div class="col-9">
+        <div class="card-body">
+            <h5 class="card-title">@Model.Name</h5>
+            <p class="card-text">@Model.Description</p>
+            <p class="card-text">Member Count: @Model.MemberCount</p>
+            <button type="button" class="btn btn-primary" onclick="JoinIn(@Model.Id)">Join in</button>
+            <button type="button" class="btn btn-primary" onclick="Back('/Group/GetAll')">Back</button>
+        </div>
+    </div>
+</div>

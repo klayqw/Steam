@@ -14,6 +14,8 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IGameServiceBase, GameService>();
 builder.Services.AddScoped<IWorkShopServiceBase, WorkShopService>();
+builder.Services.AddScoped<IGroupServices, GroupService>();
+builder.Services.AddScoped<IUserServiceBase, UserService>();
 
 builder.Services.AddDbContext<SteamDBContext>(dbContextOptionsBuilder => {
     var connectionString = builder.Configuration.GetConnectionString("SteamBase");

@@ -38,6 +38,8 @@ public class WorkShopService : IWorkShopServiceBase
         {
             return new BadRequestResult();
         }
+        var toedit = await _dbContext.workShops.FindAsync(workshopid);
+        toedit.Subscribers += 1;
         var toadd = new UserWorkShopSub()
         {
             WorkShopItemId = workshopid,
@@ -95,6 +97,8 @@ public class WorkShopService : IWorkShopServiceBase
     {
         var userWorkShopSubToRemove = await _dbContext.userWorkShopSubs.FirstOrDefaultAsync(uw => uw.UserId == userid && uw.WorkShopItemId == id);
         _dbContext.userWorkShopSubs.Remove(userWorkShopSubToRemove);
+        var toedit = await _dbContext.workShops.FindAsync(id);
+        toedit.Subscribers -= 1;
         await _dbContext.SaveChangesAsync();
         return new OkResult();
     }

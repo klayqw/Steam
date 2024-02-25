@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Steam.Dto;
 using Steam.Models;
+using Steam.Services.Base;
+using System.Security.Claims;
 
 namespace Steam.Controllers;
 
@@ -11,14 +13,15 @@ public class UserController : Controller
     private readonly UserManager<IdentityUser> userManager;
     private readonly RoleManager<IdentityRole> roleManager;
     private readonly SignInManager<IdentityUser> signInManager;
-
+    private readonly IUserServiceBase userService;
     public UserController(UserManager<IdentityUser> userManager,
       RoleManager<IdentityRole> roleManager,
-      SignInManager<IdentityUser> signInManager)
+      SignInManager<IdentityUser> signInManager,IUserServiceBase userService)
     {
         this.userManager = userManager;
         this.roleManager = roleManager;
         this.signInManager = signInManager;
+        this.userService = userService;
     }
 
     [HttpGet]
@@ -93,6 +96,40 @@ public class UserController : Controller
     {
         await signInManager.SignOutAsync();
         return Redirect("/");
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> Profile()
+    {
+        var user = await userService.GetUser(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        var games = await userService.GetUserGames(user.Id);
+        var groups = await userService.GetUserGroups(user.Id);
+
+        return View(new UserDto()
+        {
+            user = user,
+            games = games,
+            groups = groups,
+        });
+
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> Libary()
+    {
+        var user = await userService.GetUser(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        var games = await userService.GetUserGames(user.Id);
+        return View(games);
+    }
+
+    [HttpGet]
+    [Authorize]
+
+    public IActionResult Settings()
+    {
+        return View();
     }
 
 }

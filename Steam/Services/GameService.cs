@@ -71,5 +71,17 @@ public class GameService : IGameServiceBase
         await _dbContext.SaveChangesAsync();
         return new OkResult();
     }
+
+    public async Task<IActionResult> Buy(string id, int gameid)
+    {
+        await _dbContext.userGames.AddAsync(new UserGames()
+        {
+            UserId = id,
+            GameId = gameid,
+        });
+        await _dbContext.SaveChangesAsync();
+        return new OkResult();
+    }
+
 }
 

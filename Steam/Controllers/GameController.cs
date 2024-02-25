@@ -5,6 +5,7 @@ using Steam.Data;
 using Steam.Dto;
 using Steam.Services;
 using Steam.Services.Base;
+using System.Security.Claims;
 
 namespace Steam.Controllers;
 
@@ -72,6 +73,16 @@ public class GameController : Controller
     {
         await gameService.Add(dto);
         return RedirectToAction("GetAll");
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> Buy(int id)
+    {
+        Console.WriteLine(id);
+        var userid = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        await gameService.Buy(userid, id);
+        return RedirectToAction(controllerName: "User", actionName: "Profile");
     }
 
 }

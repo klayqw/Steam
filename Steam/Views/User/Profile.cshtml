@@ -1,0 +1,62 @@
+﻿@model UserDto
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="row">
+    <div class="col-3">
+        <img src="@Model.user.AvatarUrl" class="img-fluid" alt="Game Image" style="max-height: 200px;">
+    </div>
+    <div class="col-9">
+        <div class="card-body">
+            <h5 class="card-title">@Model.user.UserName</h5>
+            <button type="button" class="btn btn-primary" onclick="Back('/WorkShop/GetAll')">Back</button>
+        </div>
+    </div>
+    <p>Games:</p>
+    @if (Model.games is null || Model.games.Any() == false)
+    {
+        <p>Nothing here..</p>
+    }
+    else
+    {
+        <div class="d-inline-flex p-2">
+        @foreach(var item in Model.games)
+        {
+            <div class="card" style="width: 18rem;" onclick="showGameDetails(@item.Id)" style="max-height: 200px;">
+                <img src="@item.GameImageUrl" class="card-img-top" alt="Game Image">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Title</h5>
+                    <p class="card-text">@item.Description</p>
+                    <p class="card-text">@item.Price</p>
+                </div>
+            </div>
+        }
+        </div>
+    }
+    <p>Groups:</p>
+    @if (Model.groups is null || Model.groups.Any() == false)
+    {
+        <p>Nothing here..</p>
+    }
+    else
+    {
+        <div class="d-inline-flex p-2">
+        @foreach(var item in Model.groups)
+        {
+            <div class="p-2">
+                    <div class="card" style="width: 18rem;" onclick="showGroupDetail(@item.Id)">
+                        <img src="@item.GroupImageUrl" class="card-img-top" alt="Game Image" style="max-height:200px">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Name</h5>
+                            <p class="card-text">@item.Description</p>
+                            <p class="card-text">@item.MemberCount</p>
+                            <p class="card-text">@item.Creator</p>
+                        </div>
+                    </div>
+            </div>
+                   
+        }
+        </div>
+    }
+</div>

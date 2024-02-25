@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Game>
+@{
+    ViewData["Title"] = "Libary";
+}
+
+@if (Model is null || Model.Any() == false)
+{
+    <p>Nothing here..</p>
+}
+else
+{
+    <div class="d-inline-flex p-2">
+        @foreach (var item in Model)
+        {
+            <div class="card" style="width: 18rem;" onclick="showGameDetails(@item.Id)" style="max-height: 200px;">
+                <img src="@item.GameImageUrl" class="card-img-top" alt="Game Image">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Title</h5>
+                    <p class="card-text">@item.Description</p>
+                    <p class="card-text">@item.Price</p>
+                </div>
+            </div>
+        }
+    </div>
+}
