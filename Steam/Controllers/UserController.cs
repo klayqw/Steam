@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Steam.Dto;
 using Steam.Models;
@@ -76,8 +77,22 @@ public class UserController : Controller
             await roleManager.CreateAsync(role);
             await userManager.AddToRoleAsync(newUser, role.Name);
         }
+        else
+        {
+            var role = new IdentityRole { Name = "User" };
+            await roleManager.CreateAsync(role);
+            await userManager.AddToRoleAsync(newUser, role.Name);
+        }
 
         return RedirectToAction("Login");
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> LogOut()
+    {
+        await signInManager.SignOutAsync();
+        return Redirect("/");
     }
 
 }

@@ -1,0 +1,34 @@
+﻿@model IEnumerable<WorkShop>
+@{
+    ViewData["Title"] = "WorkShop";
+}
+@if(Model is null || Model.Any() == false)
+{
+    <p>Nothing is here..</p>
+}
+else
+{
+    <div class="d-inline-flex p-2">
+        @foreach(var item in Model)
+        {
+        <div>
+            <div class="card" style="width: 18rem;" onclick="showGameDetails(@item.Id)" style="max-height: 200px;">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Title</h5>
+                    <p class="card-text">@item.Description</p>
+                    <p class="card-text">@item.Creator</p>
+                </div>
+            </div>
+            <div>
+                    <button class="btn btn-primary" onclick="DeleteWorkShop(@item.Id)">Delete</button>
+                    <button class="btn btn-primary" onclick="UpdateWorkShopView(@item.Id)">Update</button>
+            </div>
+            
+        </div>
+        }
+    </div>
+}
+
+<div>
+    <button class="btn btn-primary" onclick="Back('/WorkShop/GetAll')">Back</button>
+</div>

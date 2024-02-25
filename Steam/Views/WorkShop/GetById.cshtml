@@ -1,0 +1,18 @@
+﻿@model WorkShop
+@{
+    ViewData["Title"] = "All Info WorkShop";
+}
+
+<div class="row">
+    <div class="col-9">
+        <div class="card-body">
+            <h5 class="card-title">@Model.Title</h5>
+            <p class="card-text">@Model.Description</p>
+            <p class="card-text">Genre: @Model.Creator</p>
+            <p class="card-text">Like: @Model.Like Dislike: @Model.Dislike </p>
+            <p class="card-text">Genre: @Model.Subscribers</p>
+            <button type="button" class="btn btn-primary" onclick="AddSub(@Model.Id)">Add to Sub</button>
+            <button type="button" class="btn btn-primary" onclick="Back('/WorkShop/GetAll')">Back</button>
+        </div>
+    </div>
+</div>

@@ -7,13 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Services\Base\**" />
-    <Content Remove="Services\Base\**" />
-    <EmbeddedResource Remove="Services\Base\**" />
-    <None Remove="Services\Base\**" />
-  </ItemGroup>
-
-  <ItemGroup>
 	  <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.16" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.16" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.16">

@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Steam.Data;
+using Steam.Services;
+using Steam.Services.Base;
 using System.Data.SqlClient;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddAuthorization();
 
+
+builder.Services.AddScoped<IGameServiceBase, GameService>();
+builder.Services.AddScoped<IWorkShopServiceBase, WorkShopService>();
 
 builder.Services.AddDbContext<SteamDBContext>(dbContextOptionsBuilder => {
     var connectionString = builder.Configuration.GetConnectionString("SteamBase");

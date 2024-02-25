@@ -15,4 +15,6 @@ public class WorkShop
     public int Dislike {  get; set; }
     [Required]
     public int Subscribers { get; set; }
+    [Required]
+    public string Creator {  get; set; }    
 }

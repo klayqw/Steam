@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace Steam.Dto;
-public class GameAddDTO
+public class GameDto
 {
     public string GameImageUrl { get; set; }
     public string Title { get; set; }
