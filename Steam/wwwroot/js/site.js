@@ -19,6 +19,33 @@ async function UpdateGroupView(id) {
         })
 }
 
+async function updateUserData(id) {
+    await fetch('/User/Update', { method: "GET" })
+        .then(data => {
+            window.location.href = '/User/Update';
+        })
+}
+
+async function updateUser()
+{
+    event.preventDefault();
+    var data = $("#updateUser").serializeArray().reduce(function (obj, item) {
+        obj[item.name] = item.value;
+        return obj;
+    }, {});
+    var jsonBody = JSON.stringify(data);
+    console.log(jsonBody);
+    await fetch('/User/Update', {
+        method: "PUT",
+        body: jsonBody,
+        headers: {
+            "Content-Type": "application/json"
+        }      
+    }).then(data => {
+        window.location.href = '/User/Profile';
+    })
+}
+
 async function UpdateGroup(id) {
     event.preventDefault();
     var data = $("#updateGroupContainer").serializeArray().reduce(function (obj, item) {
@@ -26,7 +53,6 @@ async function UpdateGroup(id) {
         return obj;
     }, {});
     var jsonBody = JSON.stringify(data);
-    console.log(jsonBody)
 
     await fetch('/Group/Update?id=' + id, {
         method: "PUT",

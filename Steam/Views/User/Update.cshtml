@@ -1,0 +1,35 @@
+﻿@model UpdateDto
+@{
+    ViewData["Title"] = "Update";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form class="w-50 p-3" id="updateUser">
+    <div asp-validation-summary="All"></div>
+
+    <label asp-for="@Model.AvatarUrl" class="form-label">Avatar Url</label>
+    <input class="form-control" asp-for="@Model.AvatarUrl" type="text" class="form-control">
+    <span asp-validation-for="@Model.AvatarUrl"></span>
+
+    <div></div>
+
+    <label asp-for="@Model.Password" class="form-label">Password</label>
+    <input class="form-control" asp-for="@Model.Password" type="password" class="form-control">
+    <span asp-validation-for="@Model.Password"></span>
+
+    <div></div>
+    <label asp-for="@Model.OldPassword" class="form-label">Old Password</label>
+    <input class="form-control" asp-for="@Model.OldPassword" type="password" class="form-control">
+    <span asp-validation-for="@Model.OldPassword"></span>
+
+
+
+    <button class="d-block btn btn-success" type="submit" onclick="updateUser()">Update</button>
+</form>
+
+<button class="d-block btn btn-success" onclick=Back('/User/Profile')">Back</button>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial">
+}

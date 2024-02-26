@@ -126,10 +126,30 @@ public class UserController : Controller
 
     [HttpGet]
     [Authorize]
-
     public IActionResult Settings()
     {
         return View();
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> Update()
+    {
+        var user = await userService.GetUser(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        return View(new UpdateDto()
+        {
+            AvatarUrl = user.AvatarUrl,
+        });
+    }
+
+    [HttpPut]
+    [Authorize]
+    public async Task<IActionResult> Update([FromBody]UpdateDto dto )
+    {
+        Console.WriteLine(dto.AvatarUrl);
+        var user = await userService.GetUser(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        await userService.Update(dto, user);
+        return RedirectToAction("Profile");
     }
 
 }
