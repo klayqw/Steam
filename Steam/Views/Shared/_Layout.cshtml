@@ -8,51 +8,52 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Steam.styles.css" asp-append-version="true" />
 </head>
-<body>
+<body class="bg-dark">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary bg-secondary" >
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Steam</a>
+                <img src="~/steam.png" style="max-width: 30px; max-height:30px;margin-right: 10px;" onclick="Back('/')"/>
+                <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">Steam</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">                                                                   
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         @if(User.IsInRole("Admin") || User.IsInRole("User"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Game" asp-action="GetAll">Store</a>
+                                <a class="nav-link text-white" asp-area="" asp-controller="Game" asp-action="GetAll">Store</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="WorkShop" asp-action="GetAll">Work Shop</a>
+                                <a class="nav-link text-white" asp-area="" asp-controller="WorkShop" asp-action="GetAll">Work Shop</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Group" asp-action="GetAll">Groups</a>
+                                <a class="nav-link text-white" asp-area="" asp-controller="Group" asp-action="GetAll">Groups</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="FindAnotherProfile">Find Another Profile</a>
+                                <a class="nav-link text-white" asp-area="" asp-controller="User" asp-action="FindAnotherProfile">Find Another Profile</a>
                             </li>
                            
                             <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                               <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 @User.Identity.Name
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu bg-dark">
                                 <li class="dropdown-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Profile">Profile</a>
+                                        <a class="nav-link text-white" asp-area="" asp-controller="User" asp-action="Profile">Profile</a>
                                 </li>
                                 <li class="dropdown-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Libary">Libary</a>
+                                        <a class="nav-link text-white" asp-area="" asp-controller="User" asp-action="Libary">Libary</a>
                                 </li>
                                  <li class="dropdown-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Notification" asp-action="GetAllNotification">Notification</a>
+                                        <a class="nav-link text-white" asp-area="" asp-controller="Notification" asp-action="GetAllNotification">Notification</a>
                                 </li>
                                 <li class="dropdown-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Settings">Settings</a>
+                                        <a class="nav-link text-white" asp-area="" asp-controller="User" asp-action="Settings">Settings</a>
                                 </li>
                                 <li class="dropdown-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Logout">Log out</a>
+                                    <a class="nav-link text-white" asp-area="" asp-controller="User" asp-action="Logout">Log out</a>
                                 </li>
                             </ul>
                             </li>
@@ -60,19 +61,19 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
+                                <a class="nav-link text-white" asp-area="" asp-controller="User" asp-action="Login">Login</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Registration">Registration</a>
+                                <a class="nav-link text-white" asp-area="" asp-controller="User" asp-action="Registration">Registration</a>
                             </li>
                         }
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Game" asp-action="Add">Add Game</a>
+                                <a class="nav-link text-white" asp-area="" asp-controller="Game" asp-action="Add">Add Game</a>
                             </li>
                             <li>
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Panel">Admin Panel</a>
+                                <a class="nav-link text-white" asp-area="" asp-controller="Admin" asp-action="Panel">Admin Panel</a>
                             </li>
                         }                        
                         
@@ -89,11 +90,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - Steam - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

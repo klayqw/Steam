@@ -3,7 +3,9 @@
     ViewData["Title"] = "Get All";
 }
 
-
+    <div>
+        <button class="btn btn-secondary" onclick="Back()">Back</button>
+    </div>
 <div class="d-inline-flex p-2">
 @if(Model is null || Model.Any() == false)
 {
@@ -14,19 +16,19 @@ else
     foreach(var item in Model)
     {
         <div class="p-2">
-                <div class="card" style="width: 18rem;" onclick="showGameDetails(@item.Id)" style="max-height: 200px;">
-                    <img src="@item.GameImageUrl" class="card-img-top" alt="Game Image" style="max-height: 400px; max-width: 400px">
+                <div class="card bg-dark" style="width: 18rem;" onclick="showGameDetails(@item.Id)" style="max-height: 200px;">
+                    <img src="@item.GameImageUrl" class="card-img-top" alt="Game Image" style="max-height: 400px; max-width: 500px">
                     <div class="card-body">
-                        <h5 class="card-title">@item.Title</h5>
-                        <p class="card-text">@item.Description</p>
-                        <p class="card-text">@item.Price</p>
+                        <h5 class="card-title text-white-50">@item.Title</h5>
+                            <p class="card-text text-white-50">@item.Description</p>
+                            <p class="card-text text-white-50">@item.Price</p>
                     </div>           
                 </div>
                 @if (User.IsInRole("Admin"))
                 {
                     <div>
-                        <button class="btn btn-primary" onclick="DeleteGame(@item.Id)">Delete</button>
-                        <button class="btn btn-primary" onclick="UpdateGameView(@item.Id)">Update</button>
+                            <button class="btn btn-secondary" onclick="DeleteGame(@item.Id)">Delete</button>
+                            <button class="btn btn-secondary" onclick="UpdateGameView(@item.Id)">Update</button>
                     </div>
                 }
         </div>
@@ -34,7 +36,4 @@ else
            
     }
 }
-</div>
-<div>
-    <button class="btn btn-primary" onclick="Back()">Back</button>
 </div>

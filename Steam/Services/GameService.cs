@@ -22,6 +22,10 @@ public class GameService : IGameServiceBase
     public async Task Delete(int id)
     {
         var gametodelete = await _dbContext.Games.FirstOrDefaultAsync(x => x.Id == id);
+        if (gametodelete == null)
+        {
+            throw new NullReferenceException($"game was not found under id {id}");
+        }
         _dbContext.Games.Remove(gametodelete);
         await _dbContext.SaveChangesAsync();
     }
@@ -31,6 +35,7 @@ public class GameService : IGameServiceBase
         var game = new Game()
         {
             GameImageUrl = dto.GameImageUrl,
+            GamePreviewUrl = dto.GamePreviewUrl,
             Title = dto.Title,
             Description = dto.Description,
             Devoloper = dto.Devoloper,
@@ -48,19 +53,33 @@ public class GameService : IGameServiceBase
     public async Task<Game> GetById(int id)
     {
         var result = await _dbContext.Games.FirstOrDefaultAsync(e => e.Id == id);
+        if (result == null)
+        {
+            throw new NullReferenceException($"game was not found under id {id}");
+        }
         return result;
     }
 
     public async Task<IEnumerable<Game>> GetAll()
     {
         var result = await _dbContext.Games.ToArrayAsync();
+        if (result == null)
+        {
+            throw new NullReferenceException($"problems with database");
+        }
         return result;
     }
 
     public async Task<IActionResult> Update(int id, GameDto dto)
     {
+        Console.WriteLine(dto.Price);
         var gameToUpdate = await _dbContext.Games.FindAsync(id);
+        if (gameToUpdate == null)
+        {
+            throw new NullReferenceException($"game was not found under id {id}");
+        }
         gameToUpdate.GameImageUrl = dto.GameImageUrl;
+        gameToUpdate.GamePreviewUrl = dto.GamePreviewUrl;
         gameToUpdate.Title = dto.Title;
         gameToUpdate.Description = dto.Description;
         gameToUpdate.Devoloper = dto.Devoloper;
@@ -84,5 +103,16 @@ public class GameService : IGameServiceBase
         return new OkResult();
     }
 
+    public async Task<IActionResult> DeleteFromLibary(int id,string userid)
+    {
+        var userGame = await _dbContext.userGames.FirstOrDefaultAsync(ug => ug.UserId == userid && ug.GameId == id);
+        if(userGame == null)
+        {
+            throw new NullReferenceException("Game or user not found");
+        }
+        _dbContext.Remove(userGame);
+        await _dbContext.SaveChangesAsync();
+        return new OkResult();
+    }
 }
 

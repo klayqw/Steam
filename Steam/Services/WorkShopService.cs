@@ -59,18 +59,22 @@ public class WorkShopService : IWorkShopServiceBase
         if(context.User.Identity.Name == todelete.Creator || context.User.IsInRole("Admin"))
         {
             var userto = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == todelete.Creator);
-            await _notificationService.AddNotification(new Notification()
+            if (userto != null)
             {
-                Title = $"Delete From {context.User.Identity.Name}",
-                Description = $"Your workshop item {todelete.Title} was delete by admin",
-                UserTo = userto.Id,
-                UserFrom = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
-                Type = "DeleteWorkShopItem"
-            });
-            var notification = await _dbContext.notifications
-                                .OrderByDescending(n => n.Id)
-                                .FirstOrDefaultAsync();
-            await _notificationService.AddNotificationToUser(userto.Id, notification.Id);
+                await _notificationService.AddNotification(new Notification()
+                {
+                    Title = $"Delete From {context.User.Identity.Name}",
+                    Description = $"Your workshop item {todelete.Title} was delete by {context.User.Identity.Name}",
+                    UserTo = userto.Id,
+                    UserFrom = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                    Type = "DeleteWorkShopItem"
+                });
+                var notification = await _dbContext.notifications
+                                    .OrderByDescending(n => n.Id)
+                                    .FirstOrDefaultAsync();
+                await _notificationService.AddNotificationToUser(userto.Id, notification.Id);
+            }
+           
             _dbContext.workShops.Remove(todelete);
             await _dbContext.SaveChangesAsync();
             return new OkResult();
@@ -126,18 +130,21 @@ public class WorkShopService : IWorkShopServiceBase
         if(context.User.Identity.Name == gameToUpdate.Creator || context.User.IsInRole("Admin"))
         {
             var userto = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == gameToUpdate.Creator);
-            await _notificationService.AddNotification(new Notification()
+            if(userto != null)
             {
-                Title = $"Update From {context.User.Identity.Name}",
-                Description = $"Your workshop item {gameToUpdate.Title} was updated by admin",
-                UserTo = userto.Id,
-                UserFrom = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
-                Type = "UpdateWorkShopItem"
-            });
-            var notification = await _dbContext.notifications
-                                .OrderByDescending(n => n.Id)
-                                .FirstOrDefaultAsync();
-            await _notificationService.AddNotificationToUser(userto.Id, notification.Id);
+                await _notificationService.AddNotification(new Notification()
+                {
+                    Title = $"Update From {context.User.Identity.Name}",
+                    Description = $"Your workshop item {gameToUpdate.Title} was updated by {context.User.Identity.Name}",
+                    UserTo = userto.Id,
+                    UserFrom = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                    Type = "UpdateWorkShopItem"
+                });
+                var notification = await _dbContext.notifications
+                                    .OrderByDescending(n => n.Id)
+                                    .FirstOrDefaultAsync();
+                await _notificationService.AddNotificationToUser(userto.Id, notification.Id);
+            }
             gameToUpdate.Title = workShopDto.Title;
             gameToUpdate.Description = workShopDto.Description;
             await _dbContext.SaveChangesAsync();

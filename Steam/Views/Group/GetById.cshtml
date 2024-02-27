@@ -1,19 +1,85 @@
-﻿@model Group
+﻿@model GroupViewModel
 @{
     ViewData["Title"] = "All Info";
 }
 
-<div class="row">
-    <div class="col-3">
-        <img src="@Model.GroupImageUrl" class="img-fluid" alt="Game Image" style="max-height: 400px;">
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <img src="@Model.Group.GroupImageUrl" class="img-fluid rounded-circle" alt="Group Image" style="max-height: 400px;">
+        </div>
+        <div class="col-md-9">
+            <div class="card text-white bg-dark">
+                <div class="card-body">
+                    <h5 class="card-title">@Model.Group.Name</h5>
+                    <p class="card-text">@Model.Group.Description</p>
+                    <p class="card-text">Creator: @Model.Group.Creator</p>
+                    <p class="card-text">Member Count: @Model.Group.MemberCount</p>
+                </div>
+                <div class="card-footer">
+                    @if(Model.UserGroup.Contains(Model.Group) == false)
+                    {
+                        <button type="button" class="btn btn-secondary" onclick="JoinIn(@Model.Group.Id)">Join in</button>
+                    }
+                    else{
+                        if(User.Identity.Name == Model.Group.Creator)
+                        {
+                            <button type="button" class="btn btn-secondary">You cant leave because you are creator of group!</button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-secondary" onclick="Leave(@Model.Group.Id)">Leave</button>
+                        }
+                    }
+                   
+                    <button type="button" class="btn btn-secondary" onclick="Back('/Group/GetAll')">Back</button>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-9">
-        <div class="card-body">
-            <h5 class="card-title">@Model.Name</h5>
-            <p class="card-text">@Model.Description</p>
-            <p class="card-text">Member Count: @Model.MemberCount</p>
-            <button type="button" class="btn btn-primary" onclick="JoinIn(@Model.Id)">Join in</button>
-            <button type="button" class="btn btn-primary" onclick="Back('/Group/GetAll')">Back</button>
+</div>
+
+<div>
+    <h5 class="text-white">Group Members:</h5>
+    <div class="row">
+        @foreach (var member in Model.Users)
+        {
+            <div class="col-3" onclick="GoToWithId('/User/ProfileById','@member.Id')">
+                <img src="@member.AvatarUrl" class="img-fluid rounded-circle" alt="@member.UserName" style="max-height: 200px;">
+                <p class="text-white">@member.UserName</p>
+            </div>
+        }
+    </div>
+</div>
+
+<div id="leaved" class="modal fade bg-transparent bg-dark" role="dialog">
+    <div class="modal-dialog bg-dark">
+        <div class="modal-content bg-dark">
+            <div class="modal-header">
+                <h4 class="modal-title text-white">Leaved!</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-white">You have successfully leaved from group</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeBtn" data-dismiss="modal" onclick="CloseModel(leaved)">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="joined" class="modal fade bg-transparent bg-dark" role="dialog">
+    <div class="modal-dialog bg-dark">
+        <div class="modal-content bg-dark">
+            <div class="modal-header">
+                <h4 class="modal-title text-white">Congratulations!</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-white">You joined to group</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeBtn" data-dismiss="modal" onclick="CloseModel(joined)">Close</button>
+            </div>
         </div>
     </div>
 </div>

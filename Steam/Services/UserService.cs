@@ -47,9 +47,7 @@ public class UserService : IUserServiceBase
 
     public async Task<IActionResult> Update(UpdateDto dto, User user)
     {
-        Console.WriteLine(dto.AvatarUrl);
         user.AvatarUrl = dto.AvatarUrl;
-        Console.WriteLine(user.AvatarUrl);
         await userManager.UpdateAsync(user);
         if (dto.Password is null || dto.Password.IsNullOrEmpty() || dto.OldPassword is null || dto.OldPassword.IsNullOrEmpty())
         {
@@ -60,5 +58,11 @@ public class UserService : IUserServiceBase
             await userManager.ChangePasswordAsync(user,dto.OldPassword,dto.Password);
             return new OkResult();
         }
+    }
+
+    public async Task<IEnumerable<User>> Search(string username)
+    {
+        var users = _dbContext.Users.OfType<User>().Where(x => x.UserName.Contains(username));
+        return users;
     }
 }

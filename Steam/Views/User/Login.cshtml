@@ -4,18 +4,18 @@
     ViewData["Title"] = "Login";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h5 class="text-white">@ViewData["Title"]</h5>
 
 <form asp-action="Login" method="post" class="w-50 p-3">
-    <label asp-for="Login" class="form-label">Login</label>
-    <input class="form-control" asp-for="Login" type="text" class="form-control">
+    <label asp-for="Login" class="form-label text-white">Login</label>
+    <input class="form-control" asp-for="Login" type="text" class="form-control ">
     <span asp-validation-for="Login"></span>
 
-    <label asp-for="Password" class="form-label">Password</label>
+    <label asp-for="Password" class="form-label text-white">Password</label>
     <input class="form-control" asp-for="Password" type="password" class="form-control">
     <span asp-validation-for="Password"></span>
 
-    <button class="d-block btn btn-success" type="submit">Login</button>
+    <button class="d-block btn btn-success m-2" type="submit">Login</button>
 </form>
 
 @section Scripts {

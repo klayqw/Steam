@@ -20,13 +20,21 @@ public class AdminPanelService : IAdminPanel
     public async Task<IActionResult> BanUserById(string id)
     {
         var user = await userManager.FindByIdAsync(id);
-        userManager.DeleteAsync(user);
+        if(user == null)
+        {
+            throw new NullReferenceException($"User not found by id {id}");
+        }
+        await userManager.DeleteAsync(user);
         return new OkResult();
     }
 
     public async Task<IEnumerable<User>> GetAllUser()
     {
         var users = userManager.Users.ToList();
+        if(users == null)
+        {
+            throw new NullReferenceException("Problems with database");
+        }
         var usersWithoutAdminRole = users.Where(u => !userManager.IsInRoleAsync(u, "Admin").Result).OfType<User>().ToList();
         return usersWithoutAdminRole;
     }

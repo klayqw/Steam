@@ -4,6 +4,7 @@ namespace Steam.Dto;
 public class GameDto
 {
     public string GameImageUrl { get; set; }
+    public string GamePreviewUrl { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
     public string Devoloper { get; set; }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Steam.Dto;
 using Steam.Services.Base;
+using Steam.ViewModel;
 using System.Security.Claims;
 
 namespace Steam.Controllers;
@@ -18,19 +19,40 @@ public class GroupController : Controller
     }
 
     [HttpGet]
-    [Authorize]
     public async Task<IActionResult> GetAll()
     {
-        var result = await groupService.GetAll();   
-        return View(result);
+        try
+        {
+            var result = await groupService.GetAll();
+            return View(result);
+        }
+        catch (Exception ex)
+        {
+            return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
+        }
     }
 
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> GetById(int id)
     {
-        var result = await groupService.GetById(id);
-        return View(result);
+        try
+        {
+            var result = await groupService.GetById(id);
+            var users = await groupService.GetUsersInGroup(id);
+            var usergroups = await groupService.ShowJoinedGroup(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            
+            return View(new GroupViewModel()
+            {
+                Group = result,
+                Users = users,
+                UserGroup = usergroups
+            });
+        }
+        catch (Exception ex)
+        {
+            return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
+        }
     }
 
     [HttpGet]
@@ -44,90 +66,145 @@ public class GroupController : Controller
     [Authorize]
     public async Task<IActionResult> Add(GroupDto dto)
     {
-        var result = validator.Validate(dto);
-        if (result.IsValid == false)
+        try
         {
-            foreach (var error in result.Errors)
+            var result = validator.Validate(dto);
+            if (result.IsValid == false)
             {
-                ModelState.AddModelError(
-                    key: error.PropertyName,
-                    errorMessage: error.ErrorMessage
-                );
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(
+                        key: error.PropertyName,
+                        errorMessage: error.ErrorMessage
+                    );
+                }
+                return View("Add");
             }
-            return View("Add");
+            await groupService.Add(dto, User.Identity.Name);
+            return RedirectToAction("GetAll");
         }
-        await groupService.Add(dto,User.Identity.Name);
-        return RedirectToAction("GetAll");
+        catch (Exception ex)
+        {
+            return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
+        }
     }
 
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> GetUserGroup()
     {
-        var result = await groupService.GetUserGroup(User.Identity.Name);
-        return View(result);
+        try
+        {
+            var result = await groupService.GetUserGroup(User.Identity.Name);
+            return View(result);
+        }
+        catch (Exception ex)
+        {
+            return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
+        }
     }
 
     [HttpPost]
     [Authorize]
     public async Task<IActionResult> JoinIn(int id)
     {
-        Console.WriteLine(id);
-        await groupService.JoinInGroup(id, User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-        return RedirectToAction("ShowJoinedGroup");
+        try
+        {
+            Console.WriteLine(id);
+            await groupService.JoinInGroup(id, User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            return RedirectToAction("ShowJoinedGroup");
+        }
+        catch (Exception ex)
+        {
+            return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
+        }
     }
 
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> ShowJoinedGroup()
     {
-        var result = await groupService.ShowJoinedGroup(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-        return View(result);
+        try
+        {
+            var result = await groupService.ShowJoinedGroup(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            return View(result);
+        }
+        catch (Exception ex)
+        {
+            return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
+        }
     }
 
     [HttpDelete]
     [Authorize]
     public async Task<IActionResult> Leave(int id)
     {
-        await groupService.Leave(id, User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-        return RedirectToAction("ShowJoinedGroup");
+        try
+        {
+            await groupService.Leave(id, User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            return RedirectToAction("ShowJoinedGroup");
+        }
+        catch (Exception ex)
+        {
+            return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
+        }
     }
 
     [HttpDelete]
     [Authorize]
     public async Task<IActionResult> DeleteGroup(int id)
     {
-        await groupService.Delete(id, HttpContext);
-        return RedirectToAction("GetAll");
+        try
+        {
+            await groupService.Delete(id, HttpContext);
+            return RedirectToAction("GetAll");
+        }
+        catch (Exception ex)
+        {
+            return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
+        }
     }
 
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> Update(int id)
     {
-        
-        var toedit = await groupService.GetById(id);
-        return View(toedit);
+        try
+        {
+            var toedit = await groupService.GetById(id);
+            return View(toedit);
+        }
+        catch (Exception ex)
+        {
+            return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
+        }
     }
 
     [HttpPut]
     [Authorize]
-    public async Task<IActionResult> Update(int id,[FromBody]GroupDto dto)
+    public async Task<IActionResult> Update(int id, [FromBody] GroupDto dto)
     {
-        var result = validator.Validate(dto);
-        if (result.IsValid == false)
+        try
         {
-            foreach (var error in result.Errors)
+            var result = validator.Validate(dto);
+            if (result.IsValid == false)
             {
-                ModelState.AddModelError(
-                    key: error.PropertyName,
-                    errorMessage: error.ErrorMessage
-                );
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(
+                        key: error.PropertyName,
+                        errorMessage: error.ErrorMessage
+                    );
+                }
+                return View("Update");
             }
-            return View("Update");
+            await groupService.Update(dto, id, HttpContext);
+            return RedirectToAction("GetAll");
         }
-        await groupService.Update(dto, id, HttpContext);
-        return RedirectToAction("GetAll");
+        catch (Exception ex)
+        {
+            return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
+        }
     }
 
 }

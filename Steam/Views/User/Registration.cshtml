@@ -4,33 +4,32 @@
     ViewData["Title"] = "Registration";
 }
 
-
-<h1>@ViewData["Title"]</h1>
+<h5 class="text-white">Registration</h5>
 
 <form asp-action="Registration" method="post" class="w-50 p-3">
     <div asp-validation-summary="All"></div>
 
     <div></div>
 
-    <label asp-for="Email" class="form-label">Email</label>
+    <label asp-for="Email" class="form-label  text-white">Email</label>
     <input class="form-control" asp-for="Email" type="email" class="form-control">
     <span asp-validation-for="Email"></span>
 
     <div></div>
 
-    <label asp-for="Login" class="form-label">Username</label>
+    <label asp-for="Login" class="form-label  text-white">Username</label>
     <input class="form-control" asp-for="Login" type="text" class="form-control">
     <span asp-validation-for="Login"></span>
 
     <div></div>
 
-    <label asp-for="Password" class="form-label">Password</label>
+    <label asp-for="Password" class="form-label  text-white">Password</label>
     <input class="form-control" asp-for="Password" type="password" class="form-control">
     <span asp-validation-for="Password"></span>
 
     <div></div>
 
-    <button class="d-block btn btn-success" type="submit">Register</button>
+    <button class="d-block btn btn-success m-2" type="submit">Register</button>
 </form>
 
 @section Scripts {

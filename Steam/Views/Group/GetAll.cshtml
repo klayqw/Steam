@@ -4,44 +4,39 @@
 }
 
 <div>
-    <button class="btn btn-primary" onclick="AddGroup()" style="padding:0,100px">Creat Group</button>
-    <button class="btn btn-primary" onclick="ShowGroup()" style="padding:0,100px">Show my Creator Groups</button>
-    <button class="btn btn-primary" onclick="Back('/Group/ShowJoinedGroup')" style="padding:0,100px"> Show my Groups</button>
+    <button class="btn btn-secondary " onclick="Back()">Back</button>
+    <button class="btn btn-secondary " onclick="AddGroup()">Create Group</button>
+    <button class="btn btn-secondary " onclick="ShowGroup()">Show My Creator Groups</button>
+    <button class="btn btn-secondary" onclick="Back('/Group/ShowJoinedGroup')">Show My Groups</button>
 </div>
-
 
 <div class="d-inline-flex p-2">
-@if(Model is null || Model.Any() == false)
-{
-    <p>Nothing is here..</p>
-}
-else
-{
-    foreach(var item in Model)
+    @if (Model is null || Model.Any() == false)
     {
-        <div>
-                <div class="card" style="width: 18rem;" onclick="showGroupDetail(@item.Id)" style="max-height: 200px;">
-                    <img src="@item.GroupImageUrl" class="card-img-top" alt="Game Image" style="max-height:200px">
-                    <div class="card-body">
-                        <h5 class="card-title">@item.Name</h5>
-                        <p class="card-text">@item.Description</p>
-                        <p class="card-text">@item.MemberCount</p>
-                        <p class="card-text">@item.Creator</p>
-                    </div>           
-                </div>
-                @if (User.IsInRole("Admin"))
-                {
-                    <div>
-                        <button class="btn btn-primary" onclick="DeleteGroup(@item.Id)">Delete</button>
-                        <button class="btn btn-primary" onclick="UpdateGroupView(@item.Id)">Update</button>
-                    </div>
-                }
-        </div>
-
-           
+        <p>Nothing is here..</p>
     }
-}
-</div>
-<div>
-    <button class="btn btn-primary" onclick="Back()">Back</button>
+    else
+    {
+        foreach (var item in Model)
+        {
+            <div class="p-2">
+                <div class="card bg-dark border-3" onclick="showGroupDetail(@item.Id)" style="width: 18rem;">
+                    <img src="@item.GroupImageUrl" class="card-img-top" alt="Group Image" style="max-height: 300px">
+                    <div class="card-body">
+                        <h5 class="card-title text-white">@item.Name</h5>
+                        <p class="card-text text-white">@item.Description</p>
+                        <p class="card-text text-white">@item.MemberCount</p>
+                        <p class="card-text text-white">@item.Creator</p>
+                    </div>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div>
+                            <button class="btn btn-primary" onclick="DeleteGroup(@item.Id)">Delete</button>
+                            <button class="btn btn-primary" onclick="UpdateGroupView(@item.Id)">Update</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
 </div>

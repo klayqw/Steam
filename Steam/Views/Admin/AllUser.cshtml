@@ -15,16 +15,16 @@ else
     {
         <div class="p-2">
 
-                <div class="card" style="width: 18rem;" onclick="GoToWithId('/User/ProfileById','@item.Id')" style="max-height: 200px;">
+                <div class="card bg-dark" style="width: 18rem;" onclick="GoToWithId('/User/ProfileById','@item.Id')" style="max-height: 200px;">
             <img src="@item.AvatarUrl" class="card-img-top" alt="Game Image">
             <div class="card-body">
-                <h5 class="card-title">@item.Id</h5>
-                <p class="card-text">@item.Email</p>
-                <p class="card-text">@item.UserName</p>
+                <h5 class="card-title text-white">@item.Id</h5>
+                <p class="card-text text-white">@item.Email</p>
+                <p class="card-text text-white">@item.UserName</p>
             </div>
-            <button class="btn btn-danger" onclick="Ban('@item.Id')">Ban</button>
-            <button class="btn btn-danger">Edit</button>
         </div>
+                <button class="btn btn-danger" onclick="Ban('@item.Id')">Ban</button>
+                <button class="btn btn-danger" onclick="GoToWithId('/User/UpdateById','@item.Id')">Edit</button>
         </div>
     }
     </div>

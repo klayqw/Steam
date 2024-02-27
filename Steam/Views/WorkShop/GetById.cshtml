@@ -1,18 +1,61 @@
-﻿@model WorkShop
+﻿@model WorkShopViewModel
 @{
     ViewData["Title"] = "All Info WorkShop";
 }
 
-<div class="row">
-    <div class="col-9">
-        <div class="card-body">
-            <h5 class="card-title">@Model.Title</h5>
-            <p class="card-text">@Model.Description</p>
-            <p class="card-text">Genre: @Model.Creator</p>
-            <p class="card-text">Like: @Model.Like Dislike: @Model.Dislike </p>
-            <p class="card-text">Genre: @Model.Subscribers</p>
-            <button type="button" class="btn btn-primary" onclick="AddSub(@Model.Id)">Add to Sub</button>
-            <button type="button" class="btn btn-primary" onclick="Back('/WorkShop/GetAll')">Back</button>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card text-white bg-dark mb-3">
+                <div class="card-header">@Model.item.Title</div>
+                <div class="card-body">
+                    <p class="card-text">@Model.item.Description</p>
+                    <p class="card-text">Creator: @Model.item.Creator</p>
+                    <p class="card-text">Subscribers: @Model.item.Subscribers</p>
+                </div>
+                <div class="card-footer">
+                    @if(Model.workShopUserItems.Contains(Model.item) == false)
+                    {
+                        <button type="button" class="btn btn-primary" onclick="AddSub(@Model.item.Id)">Add to Sub</button>
+                    }
+                    else{
+                        <button type="button" class="btn btn-primary" onclick="UnFollow(@Model.item.Id)">UnFollow</button>
+                    }
+                    <button type="button" class="btn btn-primary" onclick="Back('/WorkShop/GetAll')">Back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="follow" class="modal fade bg-transparent bg-dark" role="dialog">
+    <div class="modal-dialog bg-dark">
+        <div class="modal-content bg-dark">
+            <div class="modal-header">
+                <h4 class="modal-title text-white">Follow!</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-white">You have successfully follow from workshop @Model.item.Title item</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeBtn" data-dismiss="modal" onclick="CloseModel(follow)">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="unfollow" class="modal fade bg-transparent bg-dark" role="dialog">
+    <div class="modal-dialog bg-dark">
+        <div class="modal-content bg-dark">
+            <div class="modal-header">
+                <h4 class="modal-title text-white">Unfollow!</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-white">You have successfully unfollow from workshop @Model.item.Title item</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeBtn" data-dismiss="modal" onclick="CloseModel(unfollow)">Close</button>
+            </div>
         </div>
     </div>
 </div>

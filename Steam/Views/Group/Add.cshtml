@@ -5,17 +5,17 @@
 
 <form asp-action="Add" asp-controller="Group" method="post">
     <div class="mb-3">
-        <label class="form-label" asp-for="@dto.GroupImageUrl">Image url</label>
+        <label class="form-label text-white" asp-for="@dto.GroupImageUrl">Image url</label>
         <input type="text" class="form-control" asp-for="@dto.GroupImageUrl">
         <span class="text-danger" asp-validation-for="@dto.GroupImageUrl"></span>
     </div>
     <div class="mb-3">
-        <label asp-for="@dto.Name" class="form-label">Name</label>
+        <label asp-for="@dto.Name" class="form-label  text-white">Name</label>
         <input type="text" asp-for="@dto.Name" class="form-control">
         <span class="text-danger" asp-validation-for="@dto.Name"></span>
     </div>
     <div class="mb-3">
-        <label asp-for="@dto.Description" class="form-label">Description</label>
+        <label asp-for="@dto.Description" class="form-label  text-white">Description</label>
         <input type="text" asp-for="@dto.Description" class="form-control">
         <span class="text-danger" asp-validation-for="@dto.Description"></span>
     </div>

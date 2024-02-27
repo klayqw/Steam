@@ -7,9 +7,7 @@
 
 async function DeleteNotification(id) {
     await fetch('/Notification/Delete?id=' + id, { method: "DELETE" })
-        .then(data => {
-            window.location.href = '/Notification/GetAllNotification';
-        })
+    
 }
 
 async function GoToWithId(url,id) {
@@ -27,9 +25,17 @@ async function Ban(id = '') {
 
 async function Buy(id) {
     await fetch('/Game/Buy?id=' + id, { method: "POST" })
-        .then(data => {
-            window.location.href = '/User/Profile';
-        })
+    $("#buyModal").modal('show');
+}
+
+function CloseModel(name) {
+    location.reload()
+    $("#"+name).modal('hide')
+}
+
+function Close() {
+    location.reload();
+    $("#buyModal").modal('hide');
 }
 
 async function UpdateGroupView(id) {
@@ -88,21 +94,16 @@ async function UpdateGroup(id) {
 
 async function DeleteGroup(id) {
     await fetch('/Group/DeleteGroup?id=' + id, { method: "DELETE" })
-        .then(data => {
-            window.location.href = '/Group/GetAll';
-        })
+    $("#deleted").modal('show');
 }
 async function Leave(id) {
     await fetch('/Group/Leave?id=' + id, { method: "DELETE" })
-        .then(data => {
-            window.location.href = '/Group/ShowJoinedGroup';
-        })
+    $("#leaved").modal('show');
+    
 }
 async function JoinIn(id) {
     await fetch('/Group/JoinIn?id=' + id, { method: "POST" })
-        .then(data => {
-            window.location.href = '/Group/GetAll';
-        })
+    $("#joined").modal('show');
 }
 async function AddGroup() {
     await fetch('/Group/Add', { method: "GET" })
@@ -141,7 +142,7 @@ async function showWorkShopDetails(id = 0) {
 
 
 async function UpdateGame(id) {   
-    console.log(1);
+    console.log(id);
     event.preventDefault();
     var data = $("#gameFormUpdate").serializeArray().reduce(function (obj, item) {
         obj[item.name] = item.value;
@@ -149,17 +150,16 @@ async function UpdateGame(id) {
     }, {});
     var jsonBody = JSON.stringify(data);
 
-
+    console.log(jsonBody);
     await fetch('/Game/Update?id=' + id, {
         method: "PUT",
         body: jsonBody,
         headers: {
             "Content-Type": "application/json"
-        }
+        }          
+    }).then(data => {
+        window.location.href = '/Game/GetAll';
     })
-        .then(data => {
-            window.location.href = '/Game/GetAll';
-        });
 }
 
 async function UpdateWorkShop(id) {
@@ -203,12 +203,18 @@ async function DeleteGame(id) {
         })
 }
 
+async function DeleteGameFromLibary(id) {
+    await fetch('/Game/DeleteFromLibary?id=' + id, {
+        method: "DELETE"
+    })
+    $("#deletefromlibary").modal('show');
+}
+
 async function DeleteWorkShop(id) {
     await fetch('/WorkShop/Delete?id=' + id, {
         method: "DELETE"
-    }).then(data => {
-        window.location.href = '/WorkShop/GetAll';
-    }) 
+    })
+    $("#deleteworkshop").modal('show');
 }
 
 async function AddWorkShop() {
@@ -227,15 +233,10 @@ async function ShowWorkShop() {
 
 async function AddSub(id) {
     await fetch('/WorkShop/AddToSub?id=' + id, { method: "POST" })
-        .then(data => {
-            window.location.href = '/WorkShop/ShowSub';
-        })
-        
+    $("#follow").modal('show');
 }
 
 async function UnFollow(id) {
     await fetch('/WorkShop/UnFollow?id=' + id, { method: "DELETE" })
-        .then(data => {
-            window.location.href = '/WorkShop/ShowSub';
-        })
+    $("#unfollow").modal('show');
 }

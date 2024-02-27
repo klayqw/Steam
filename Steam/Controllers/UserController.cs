@@ -91,6 +91,20 @@ public class UserController : Controller
         return RedirectToAction("Login");
     }
 
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> Search(string username)
+    {
+        var result = await userService.Search(username);
+        var user = await userService.GetUser(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        return View("FindAnotherProfile", new FindUserViewModel()
+        {
+            users = result,
+            currentUser = user,
+        });
+
+    }
+
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> LogOut()
@@ -179,10 +193,10 @@ public class UserController : Controller
 
     [HttpGet]
     [Authorize]
-    public async Task<IActionResult> Update(string id)
+    public async Task<IActionResult> UpdateById(string id)
     {
         var user = await userService.GetUser(id);
-        return View(new UpdateDto()
+        return View("Update",new UpdateDto()
         {
             AvatarUrl = user.AvatarUrl,
         });

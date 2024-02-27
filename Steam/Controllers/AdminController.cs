@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Steam.Models;
 using Steam.Services.Base;
 
 namespace Steam.Controllers;
@@ -22,15 +23,28 @@ public class AdminController : Controller
     [HttpGet]
     public async Task<IActionResult> AllUser()
     {
-        var result = await adminPanel.GetAllUser();
+        IEnumerable<User> result;
+        try
+        {
+            result = await adminPanel.GetAllUser();
+        }catch (Exception ex) 
+        {
+            return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
+        }
         return View(result);
     }
 
     [HttpDelete]
     public async Task<IActionResult> Ban(string id)
     {
-        Console.WriteLine(id);
-        await adminPanel.BanUserById(id);
+        try
+        {
+            await adminPanel.BanUserById(id);
+        }
+        catch (Exception ex)
+        {
+            return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
+        }
         return RedirectToAction("AllUser");
     }
 }

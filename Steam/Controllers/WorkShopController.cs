@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Steam.Dto;
 using Steam.Services.Base;
+using Steam.ViewModel;
 using System.Security.Claims;
 
 namespace Steam.Controllers;
@@ -21,15 +22,34 @@ public class WorkShopController : Controller
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var result = await _workShopService.GetAll();
-        return View(result);
+        try
+        {
+            var result = await _workShopService.GetAll();
+            return View(result);
+        }
+        catch (Exception ex)
+        {
+            return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
+        }
     }
 
     [HttpGet]
     public async Task<IActionResult> GetById(int id)
     {
-        var result = await _workShopService.GetById(id);
-        return View(result);
+        try
+        {
+            var result = await _workShopService.GetById(id);
+            var userworkshopitem = await _workShopService.ShowSub(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            return View(new WorkShopViewModel()
+            {
+                item = result,
+                workShopUserItems = userworkshopitem,
+            });
+        }
+        catch (Exception ex)
+        {
+            return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
+        }
     }
 
     [HttpGet]
@@ -38,97 +58,154 @@ public class WorkShopController : Controller
     {
         return View(new WorkShopDto());
     }
+
     [HttpPost]
     [Authorize]
     public async Task<IActionResult> Add(WorkShopDto workShopDto)
     {
-        var result = _workShopValidator.Validate(workShopDto);
-        if (result.IsValid == false)
+        try
         {
-            foreach (var error in result.Errors)
+            var result = _workShopValidator.Validate(workShopDto);
+            if (result.IsValid == false)
             {
-                ModelState.AddModelError(
-                    key: error.PropertyName,
-                    errorMessage: error.ErrorMessage
-                );
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(
+                        key: error.PropertyName,
+                        errorMessage: error.ErrorMessage
+                    );
+                }
+                return View("Add");
             }
-            return View("Add");
+            await _workShopService.Add(workShopDto, base.HttpContext.User.Identity.Name);
+            return RedirectToAction("GetAll");
         }
-        await _workShopService.Add(workShopDto, base.HttpContext.User.Identity.Name);
-        return RedirectToAction("GetAll");
+        catch (Exception ex)
+        {
+            return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
+        }
     }
 
     [HttpDelete]
     [Authorize]
     public async Task<IActionResult> Delete(int id)
     {
-        Console.WriteLine(id);
-        await _workShopService.Delete(id, HttpContext);
-        return RedirectToAction("GetAll");
+        try
+        {
+            Console.WriteLine(id);
+            await _workShopService.Delete(id, HttpContext);
+            return RedirectToAction("GetAll");
+        }
+        catch (Exception ex)
+        {
+            return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
+        }
     }
 
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> Update(int id)
     {
-        Console.WriteLine(id);
-        var result = await _workShopService.GetById(id);
-        return View(result);
+        try
+        {
+            Console.WriteLine(id);
+            var result = await _workShopService.GetById(id);
+            return View(result);
+        }
+        catch (Exception ex)
+        {
+            return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
+        }
     }
 
     [HttpPut]
     [Authorize]
-    public async Task<IActionResult> Update([FromBody]WorkShopDto dto,int id)
+    public async Task<IActionResult> Update([FromBody] WorkShopDto dto, int id)
     {
-        var result = _workShopValidator.Validate(dto);
-        if (result.IsValid == false)
+        try
         {
-            foreach (var error in result.Errors)
+            var result = _workShopValidator.Validate(dto);
+            if (result.IsValid == false)
             {
-                ModelState.AddModelError(
-                    key: error.PropertyName,
-                    errorMessage: error.ErrorMessage
-                );
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(
+                        key: error.PropertyName,
+                        errorMessage: error.ErrorMessage
+                    );
+                }
+                return View("Update");
             }
-            return View("Update");
+            await _workShopService.Update(dto, id, HttpContext);
+            return RedirectToAction("GetAll");
         }
-        await _workShopService.Update(dto, id,HttpContext);
-        return RedirectToAction("GetAll");
+        catch (Exception ex)
+        {
+            return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
+        }
     }
 
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> GetUserWorkShop()
     {
-        var result = await _workShopService.GetUserWorkShop(HttpContext.User.Identity.Name);
-        return View(result);
+        try
+        {
+            var result = await _workShopService.GetUserWorkShop(HttpContext.User.Identity.Name);
+            return View(result);
+        }
+        catch (Exception ex)
+        {
+            return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
+        }
     }
 
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> ShowSub()
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var result = await _workShopService.ShowSub(userId);
-        return View(result);
+        try
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var result = await _workShopService.ShowSub(userId);
+            return View(result);
+        }
+        catch (Exception ex)
+        {
+            return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
+        }
     }
 
     [HttpPost]
     [Authorize]
     public async Task<IActionResult> AddToSub(int id)
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        await _workShopService.AddToSub(userId, id);
-        return RedirectToAction("ShowSub");
+        try
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            await _workShopService.AddToSub(userId, id);
+            return RedirectToAction("ShowSub");
+        }
+        catch (Exception ex)
+        {
+            return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
+        }
     }
 
     [HttpDelete]
     [Authorize]
     public async Task<IActionResult> UnFollow(int id)
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        await _workShopService.UnFollow(id, userId);
-        return RedirectToAction("ShowSub");
+        try
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            await _workShopService.UnFollow(id, userId);
+            return RedirectToAction("ShowSub");
+        }
+        catch (Exception ex)
+        {
+            return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
+        }
     }
-   
+
 }
