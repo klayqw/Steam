@@ -1,41 +1,56 @@
 ﻿@model Game
 @{
     ViewData["Title"] = "Update";
+    var gamedto = new GameDto();
 }
 
 <form id="gameFormUpdate">
     <div class="mb-3">
         <label class="form-label" asp-for="@Model.GameImageUrl">Image url</label>
         <input type="text" class="form-control" asp-for="@Model.GameImageUrl">
+        <span class="text-danger" asp-validation-for="@gamedto.GameImageUrl"></span>
     </div>
     <div class="mb-3">
         <label asp-for="@Model.Title" class="form-label">Title</label>
         <input type="text" asp-for="@Model.Title" class="form-control">
+        <span class="text-danger" asp-validation-for="@gamedto.Title"></span>
     </div>
     <div class="mb-3">
         <label asp-for="@Model.Description" class="form-label">Description</label>
         <input type="text" asp-for="@Model.Description" class="form-control">
+        <span class="text-danger" asp-validation-for="@gamedto.Description"></span>
     </div>
     <div class="mb-3">
         <label asp-for="@Model.Devoloper" class="form-label">Devoloper</label>
         <input type="text" asp-for="@Model.Devoloper" class="form-control">
+        <span class="text-danger" asp-validation-for="@gamedto.Devoloper"></span>
     </div>
     <div class="mb-3">
         <label asp-for="@Model.Publisher" class="form-label">Publisher</label>
         <input type="text" asp-for="@Model.Publisher" class="form-control">
+        <span class="text-danger" asp-validation-for="@gamedto.Publisher"></span>
     </div>
     <div class="mb-3">
         <label asp-for="@Model.Price" class="form-label">Price</label>
         <input type="text" asp-for="@Model.Price" class="form-control">
+        <span class="text-danger" asp-validation-for="@gamedto.Price"></span>
     </div>
     <div class="mb-3">
         <label asp-for="@Model.ReleaseDate" class="form-label">ReleaseDate</label>
         <input type="date" asp-for="@Model.ReleaseDate" class="form-control">
+        <span class="text-danger" asp-validation-for="@gamedto.ReleaseDate"></span>
     </div>
     <div class="mb-3">
         <label asp-for="@Model.Genre" class="form-label">Genre</label>
         <input type="text" asp-for="@Model.Genre" class="form-control">
+        <span class="text-danger" asp-validation-for="@gamedto.Genre"></span>
     </div>
     <button type="submit" class="btn btn-primary" onclick="UpdateGame(@Model.Id)">Submit</button>
 </form>
 <button onclick="Back()" class="btn btn-primary">Back</button>
+
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

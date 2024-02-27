@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Notification>
+@{
+    ViewData["Title"] = "Notification";
+}
+
+@if(Model is null || Model.Any() == false)
+{
+    <p>Nothing is here..</p>
+}
+else
+{
+    <div class="d-inline-flex p-2">
+        @foreach(var item in Model)
+        {
+           <div class="p-2">
+            <div class="card" style="width: 18rem;" style="max-height: 200px;">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Title</h5>
+                    <p class="card-text">@item.Description</p>
+                    <p class="card-text">@item.Type</p>
+                </div>
+            </div>
+            <div>
+                <button class="btn btn-primary" onclick="DeleteNotification(@item.Id)">Delete</button>
+            </div>
+        </div>
+        }
+    </div>
+}
+
+<div>
+    <button class="btn btn-primary" onclick="Back('/Game/GetAll')">Back</button>
+</div>

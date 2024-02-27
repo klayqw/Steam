@@ -6,15 +6,18 @@ using Steam.Dto;
 using Steam.Models;
 using Steam.Models.ManyTable;
 using Steam.Services.Base;
+using System.Security.Claims;
 
 namespace Steam.Services;
 
 public class GroupService : IGroupServices
 {
     private readonly SteamDBContext _dbContext;
-    public GroupService(SteamDBContext _dbContext)
+    private readonly INotificationServiceBase _notificationService;
+    public GroupService(SteamDBContext _dbContext, INotificationServiceBase notificationService)
     {
         this._dbContext = _dbContext;
+        _notificationService = notificationService;
     }
 
     public async Task<IActionResult> Add(GroupDto dto,string creator)
@@ -39,6 +42,19 @@ public class GroupService : IGroupServices
         var todelete = await _dbContext.Groups.FindAsync(id);
         if(todelete.Creator == context.User.Identity.Name || context.User.IsInRole("Admin"))
         {
+            var userto = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == todelete.Creator);
+            await _notificationService.AddNotification(new Notification()
+            {
+                Title = $"Delete From {context.User.Identity.Name}",
+                Description = $"Your group {todelete.Name} was delete by admin",
+                UserTo = userto.Id,
+                UserFrom = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                Type = "DeleteGroup"
+            });
+            var notification = await _dbContext.notifications
+                                .OrderByDescending(n => n.Id)
+                                .FirstOrDefaultAsync();
+            await _notificationService.AddNotificationToUser(userto.Id, notification.Id);
             _dbContext.Remove(todelete);
             await _dbContext.SaveChangesAsync();
             return new OkResult();
@@ -116,6 +132,19 @@ public class GroupService : IGroupServices
         var toedit = await _dbContext.Groups.FindAsync(id);
         if(toedit.Creator == context.User.Identity.Name || context.User.IsInRole("Admin"))
         {
+            var userto = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == toedit.Creator);
+            await _notificationService.AddNotification(new Notification()
+            {
+                Title = $"Update From {context.User.Identity.Name}",
+                Description = $"Your group {toedit.Name} was update by admin",
+                UserTo = userto.Id,
+                UserFrom = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                Type = "UpdateGroup"
+            });
+            var notification = await _dbContext.notifications
+                                .OrderByDescending(n => n.Id)
+                                .FirstOrDefaultAsync();
+            await _notificationService.AddNotificationToUser(userto.Id, notification.Id);
             toedit.Name = dto.Name;
             toedit.Description = dto.Description;
             toedit.GroupImageUrl = dto.GroupImageUrl;

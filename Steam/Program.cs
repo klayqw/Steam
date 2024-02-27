@@ -1,21 +1,24 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Steam.Data;
 using Steam.Services;
 using Steam.Services.Base;
 using System.Data.SqlClient;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddAuthorization();
-
-
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.AddScoped<IGameServiceBase, GameService>();
 builder.Services.AddScoped<IWorkShopServiceBase, WorkShopService>();
 builder.Services.AddScoped<IGroupServices, GroupService>();
 builder.Services.AddScoped<IUserServiceBase, UserService>();
+builder.Services.AddScoped<IAdminPanel, AdminPanelService>();
+builder.Services.AddScoped<INotificationServiceBase, NotificationService>();
 
 builder.Services.AddDbContext<SteamDBContext>(dbContextOptionsBuilder => {
     var connectionString = builder.Configuration.GetConnectionString("SteamBase");

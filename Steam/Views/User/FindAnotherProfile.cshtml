@@ -1,0 +1,35 @@
+﻿@model FindUserViewModel
+@{
+    ViewData["Title"] = "Find Another Profile";
+}
+
+@if (Model.users is null || Model.users.Any() == false)
+{
+    <p>No user in base</p>
+}
+
+else
+{
+    <div class="d-inline-flex">
+        @foreach (var item in Model.users)
+        {
+            if(Model.currentUser.UserName == item.UserName)
+            {
+                continue;
+            }
+            <div class="p-2">
+                <div class="card" style="width: 18rem;" onclick="GoToWithId('/User/ProfileById','@item.Id')" style="max-height: 200px;">
+                    <img src="@item.AvatarUrl" class="card-img-top" alt="Game Image">
+                    <div class="card-body">
+                        <p class="card-text">@item.UserName</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div>
+        <button class="btn btn-info" onclick="Back('/Game/GetAll')">Back</button>
+    </div>
+}
+
+

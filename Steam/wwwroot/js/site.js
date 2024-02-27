@@ -5,6 +5,26 @@
     })
 }
 
+async function DeleteNotification(id) {
+    await fetch('/Notification/Delete?id=' + id, { method: "DELETE" })
+        .then(data => {
+            window.location.href = '/Notification/GetAllNotification';
+        })
+}
+
+async function GoToWithId(url,id) {
+    await fetch(url + '?id=' + id, { method: "GET" })
+        .then(data => {
+            window.location.href = url + '?id=' + id;
+        })
+}
+async function Ban(id = '') {
+    await fetch('/Admin/Ban?id=' + id, { method: "DELETE" })
+        .then(data => {
+            window.location.href = '/Admin/AllUser';
+        })
+}
+
 async function Buy(id) {
     await fetch('/Game/Buy?id=' + id, { method: "POST" })
         .then(data => {

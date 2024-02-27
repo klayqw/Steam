@@ -7,10 +7,12 @@
     <div class="mb-3">
         <label class="form-label" asp-for="Title">Title</label>
         <input type="text" class="form-control" asp-for="Title">
+        <span class="text-danger" asp-validation-for="Title"></span>
     </div>   
     <div class="mb-3">
         <label asp-for="Description" class="form-label">Description</label>
         <input type="text" asp-for="Description" class="form-control">
+        <span class="text-danger" asp-validation-for="Description"></span>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>

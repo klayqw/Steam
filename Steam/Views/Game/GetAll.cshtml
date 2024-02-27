@@ -13,9 +13,9 @@ else
 {
     foreach(var item in Model)
     {
-        <div>
+        <div class="p-2">
                 <div class="card" style="width: 18rem;" onclick="showGameDetails(@item.Id)" style="max-height: 200px;">
-                    <img src="@item.GameImageUrl" class="card-img-top" alt="Game Image">
+                    <img src="@item.GameImageUrl" class="card-img-top" alt="Game Image" style="max-height: 400px; max-width: 400px">
                     <div class="card-body">
                         <h5 class="card-title">@item.Title</h5>
                         <p class="card-text">@item.Description</p>

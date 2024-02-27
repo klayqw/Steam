@@ -38,6 +38,13 @@ public class UserService : IUserServiceBase
         return userGroups;
     }
 
+    public async Task<IEnumerable<User>> GetAllUser()
+    {
+        var users = userManager.Users.ToList();
+        var usersWithoutAdminRole = users.Where(u => !userManager.IsInRoleAsync(u, "Admin").Result).OfType<User>().ToList();
+        return usersWithoutAdminRole;
+    }
+
     public async Task<IActionResult> Update(UpdateDto dto, User user)
     {
         Console.WriteLine(dto.AvatarUrl);

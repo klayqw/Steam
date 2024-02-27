@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Steam.Dto;
 using Steam.Models;
 using Steam.Services.Base;
+using Steam.ViewModel;
 using System.Security.Claims;
 
 namespace Steam.Controllers;
@@ -106,7 +107,41 @@ public class UserController : Controller
         var games = await userService.GetUserGames(user.Id);
         var groups = await userService.GetUserGroups(user.Id);
 
-        return View(new UserDto()
+        return View(new UserViewModel()
+        {
+            user = user,
+            games = games,
+            groups = groups,
+        });
+
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> ProfileById(string id)
+    {
+        var user = await userService.GetUser(id);
+        var games = await userService.GetUserGames(user.Id);
+        var groups = await userService.GetUserGroups(user.Id);
+
+        return View("Profile",new UserViewModel()
+        {
+            user = user,
+            games = games,
+            groups = groups,
+        });
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> ProfileByNickname(string nickname)
+    {
+        var userid = await userManager.FindByNameAsync(nickname);
+        var user = await userService.GetUser(userid.Id);
+        var games = await userService.GetUserGames(user.Id);
+        var groups = await userService.GetUserGroups(user.Id);
+
+        return View(new UserViewModel()
         {
             user = user,
             games = games,
@@ -142,6 +177,17 @@ public class UserController : Controller
         });
     }
 
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> Update(string id)
+    {
+        var user = await userService.GetUser(id);
+        return View(new UpdateDto()
+        {
+            AvatarUrl = user.AvatarUrl,
+        });
+    }
+
     [HttpPut]
     [Authorize]
     public async Task<IActionResult> Update([FromBody]UpdateDto dto )
@@ -152,4 +198,18 @@ public class UserController : Controller
         return RedirectToAction("Profile");
     }
 
+    [HttpGet]
+    [Authorize]
+
+    public async Task<IActionResult> FindAnotherProfile()
+    {
+        var users = await userService.GetAllUser();
+        var user = await userService.GetUser(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+        return View(new FindUserViewModel()
+        {
+            users = users,
+            currentUser = user,
+        });
+    }
 }

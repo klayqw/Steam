@@ -10,9 +10,9 @@ public class Notification
     [Required]
     public string Description { get; set; }
     [Required]
-    public int UserTo { get; set; }
+    public string UserTo { get; set; }
     [Required]
-    public int UserFrom { get; set; }
+    public string UserFrom { get; set; }
     [Required]
     public string Type {  get; set; }
 

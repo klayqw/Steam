@@ -1,16 +1,19 @@
 ﻿@model WorkShop
 @{
     ViewData["Title"] = "Add";
+    var dto = new WorkShopDto();
 }
 
 <form id="WorkShopContainer">
     <div class="mb-3">
         <label class="form-label" asp-for="@Model.Title">Title</label>
         <input type="text" class="form-control" asp-for="@Model.Title">
+        <span class="text-danger" asp-validation-for="@dto.Title"></span>
     </div>   
     <div class="mb-3">
         <label asp-for="@Model.Description" class="form-label">Description</label>
         <input type="text" asp-for="@Model.Description" class="form-control">
+        <span class="text-danger" asp-validation-for="@dto.Description"></span>
     </div>
     <button type="submit" class="btn btn-primary" onclick="UpdateWorkShop(@Model.Id)">Submit</button>
 </form>

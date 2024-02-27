@@ -1,22 +1,27 @@
-﻿@model Game
+﻿@model BuyViewModel
 @{
     ViewData["Title"] = "All Info";
 }
 
 <div class="row">
     <div class="col-3">
-        <img src="@Model.GameImageUrl" class="img-fluid" alt="Game Image" style="max-height: 400px;">
+        <img src="@Model.game.GameImageUrl" class="img-fluid" alt="Game Image" style="max-height: 400px;">
     </div>
     <div class="col-9">
         <div class="card-body">
-            <h5 class="card-title">@Model.Title</h5>
-            <p class="card-text">@Model.Description</p>
-            <p class="card-text">Developer: @Model.Devoloper</p>
-            <p class="card-text">Publisher: @Model.Publisher</p>
-            <p class="card-text">Price: @Model.Price</p>
-            <p class="card-text">Release Date: @Model.ReleaseDate.ToShortDateString()</p>
-            <p class="card-text">Genre: @Model.Genre</p>
-            <button type="button" class="btn btn-primary" onclick="Buy(@Model.Id)">Buy</button>
+            <h5 class="card-title">@Model.game.Title</h5>
+            <p class="card-text">@Model.game.Description</p>
+            <p class="card-text">Developer: @Model.game.Devoloper</p>
+            <p class="card-text">Publisher: @Model.game.Publisher</p>
+            <p class="card-text">Price: @Model.game.Price</p>
+            <p class="card-text">Release Date: @Model.game.ReleaseDate.ToShortDateString()</p>
+            <p class="card-text">Genre: @Model.game.Genre</p>
+            @if (Model.UserGames.Contains(Model.game))
+            {
+                <button type="button" class="btn btn-primary">All Ready in your Libary</button>
+            }else{
+                <button type="button" class="btn btn-primary" onclick="Buy(@Model.game.Id)">Buy</button>
+            }
             <button type="button" class="btn btn-primary" onclick="Back('/Game/GetAll')">Back</button>
         </div>
     </div>

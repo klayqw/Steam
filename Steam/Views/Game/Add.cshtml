@@ -7,35 +7,48 @@
     <div class="mb-3">
         <label class="form-label" asp-for="@dto.GameImageUrl">Image url</label>
         <input type="text" class="form-control" asp-for="@dto.GameImageUrl">
+        <span class="text-danger" asp-validation-for="@dto.GameImageUrl"></span>
     </div>
     <div class="mb-3">
         <label asp-for="@dto.Title" class="form-label">Title</label>
         <input type="text" asp-for="@dto.Title" class="form-control">
+        <span class="text-danger" asp-validation-for="@dto.Title"></span>
     </div>
     <div class="mb-3">
         <label asp-for="@dto.Description" class="form-label">Description</label>
         <input type="text" asp-for="@dto.Description" class="form-control">
+        <span class="text-danger" asp-validation-for="@dto.Description"></span>
     </div>
     <div class="mb-3">
         <label asp-for="@dto.Devoloper" class="form-label">Devoloper</label>
         <input type="text" asp-for="@dto.Devoloper" class="form-control">
+        <span class="text-danger" asp-validation-for="@dto.Devoloper"></span>
     </div>
     <div class="mb-3">
         <label asp-for="@dto.Publisher" class="form-label">Publisher</label>
         <input type="text" asp-for="@dto.Publisher" class="form-control">
+        <span class="text-danger" asp-validation-for="@dto.Publisher"></span>
     </div>
     <div class="mb-3">
         <label asp-for="@dto.Price" class="form-label">Price</label>
         <input type="text" asp-for="@dto.Price" class="form-control">
+        <span class="text-danger" asp-validation-for="@dto.Price"></span>
     </div>
     <div class="mb-3">
         <label asp-for="@dto.ReleaseDate" class="form-label">ReleaseDate</label>
         <input type="date" asp-for="@dto.ReleaseDate" class="form-control">
+        <span class="text-danger" asp-validation-for="@dto.ReleaseDate"></span>
     </div>
     <div class="mb-3">
         <label asp-for="@dto.Genre" class="form-label">Genre</label>
         <input type="text" asp-for="@dto.Genre" class="form-control">
+        <span class="text-danger" asp-validation-for="@dto.Genre"></span>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 <button onclick="Back()" class="btn btn-primary">Back</button>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

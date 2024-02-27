@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Steam.Data;
@@ -12,6 +13,7 @@ namespace Steam.Services;
 public class GameService : IGameServiceBase
 {   
     private readonly SteamDBContext _dbContext;
+    
     public GameService(SteamDBContext _dbContext)
     {
         this._dbContext = _dbContext;
@@ -26,8 +28,7 @@ public class GameService : IGameServiceBase
 
     public async Task<IActionResult> Add(GameDto dto)
     {
-        Console.WriteLine(dto.Title);
-        await _dbContext.Games.AddAsync(new Models.Game()
+        var game = new Game()
         {
             GameImageUrl = dto.GameImageUrl,
             Title = dto.Title,
@@ -37,7 +38,8 @@ public class GameService : IGameServiceBase
             Price = dto.Price,
             ReleaseDate = dto.ReleaseDate,
             Genre = dto.Genre,
-        });
+        };      
+        await _dbContext.Games.AddAsync(game);
         await _dbContext.SaveChangesAsync();
         return new OkResult();
 
@@ -58,6 +60,7 @@ public class GameService : IGameServiceBase
     public async Task<IActionResult> Update(int id, GameDto dto)
     {
         var gameToUpdate = await _dbContext.Games.FindAsync(id);
+        gameToUpdate.GameImageUrl = dto.GameImageUrl;
         gameToUpdate.Title = dto.Title;
         gameToUpdate.Description = dto.Description;
         gameToUpdate.Devoloper = dto.Devoloper;
@@ -65,9 +68,7 @@ public class GameService : IGameServiceBase
         gameToUpdate.Price = dto.Price;
         gameToUpdate.ReleaseDate = dto.ReleaseDate;
         gameToUpdate.Genre = dto.Genre;
-
         _dbContext.Update(gameToUpdate);
-
         await _dbContext.SaveChangesAsync();
         return new OkResult();
     }

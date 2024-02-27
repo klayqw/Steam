@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Steam.Dto;
 using Steam.Services.Base;
@@ -9,10 +10,11 @@ namespace Steam.Controllers;
 public class GroupController : Controller
 {
     private readonly IGroupServices groupService;
-    
-    public GroupController(IGroupServices groupService)
+    private readonly IValidator<GroupDto> validator;
+    public GroupController(IGroupServices groupService, IValidator<GroupDto> validator)
     {
         this.groupService = groupService;
+        this.validator = validator;
     }
 
     [HttpGet]
@@ -42,6 +44,18 @@ public class GroupController : Controller
     [Authorize]
     public async Task<IActionResult> Add(GroupDto dto)
     {
+        var result = validator.Validate(dto);
+        if (result.IsValid == false)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(
+                    key: error.PropertyName,
+                    errorMessage: error.ErrorMessage
+                );
+            }
+            return View("Add");
+        }
         await groupService.Add(dto,User.Identity.Name);
         return RedirectToAction("GetAll");
     }
@@ -91,6 +105,7 @@ public class GroupController : Controller
     [Authorize]
     public async Task<IActionResult> Update(int id)
     {
+        
         var toedit = await groupService.GetById(id);
         return View(toedit);
     }
@@ -99,6 +114,18 @@ public class GroupController : Controller
     [Authorize]
     public async Task<IActionResult> Update(int id,[FromBody]GroupDto dto)
     {
+        var result = validator.Validate(dto);
+        if (result.IsValid == false)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(
+                    key: error.PropertyName,
+                    errorMessage: error.ErrorMessage
+                );
+            }
+            return View("Update");
+        }
         await groupService.Update(dto, id, HttpContext);
         return RedirectToAction("GetAll");
     }

@@ -1,10 +1,10 @@
 ﻿using Steam.Models;
 
-namespace Steam.Dto;
+namespace Steam.ViewModel;
 
-public class UserDto
+public class UserViewModel
 {
-    public User user {  get; set; }
+    public User user { get; set; }
     public IEnumerable<Game> games { get; set; }
     public IEnumerable<Group> groups { get; set; }
 }

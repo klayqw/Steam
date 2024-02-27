@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Steam.Dto;
@@ -10,9 +11,11 @@ namespace Steam.Controllers;
 public class WorkShopController : Controller
 {
     private readonly IWorkShopServiceBase _workShopService;
-    public WorkShopController(IWorkShopServiceBase workShopService)
+    private readonly IValidator<WorkShopDto> _workShopValidator;
+    public WorkShopController(IWorkShopServiceBase workShopService, IValidator<WorkShopDto> _workShopValidator)
     {
         _workShopService = workShopService;
+        this._workShopValidator = _workShopValidator;
     }
 
     [HttpGet]
@@ -39,6 +42,18 @@ public class WorkShopController : Controller
     [Authorize]
     public async Task<IActionResult> Add(WorkShopDto workShopDto)
     {
+        var result = _workShopValidator.Validate(workShopDto);
+        if (result.IsValid == false)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(
+                    key: error.PropertyName,
+                    errorMessage: error.ErrorMessage
+                );
+            }
+            return View("Add");
+        }
         await _workShopService.Add(workShopDto, base.HttpContext.User.Identity.Name);
         return RedirectToAction("GetAll");
     }
@@ -65,6 +80,18 @@ public class WorkShopController : Controller
     [Authorize]
     public async Task<IActionResult> Update([FromBody]WorkShopDto dto,int id)
     {
+        var result = _workShopValidator.Validate(dto);
+        if (result.IsValid == false)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(
+                    key: error.PropertyName,
+                    errorMessage: error.ErrorMessage
+                );
+            }
+            return View("Update");
+        }
         await _workShopService.Update(dto, id,HttpContext);
         return RedirectToAction("GetAll");
     }
