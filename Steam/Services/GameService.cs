@@ -52,6 +52,10 @@ public class GameService : IGameServiceBase
 
     public async Task<Game> GetById(int id)
     {
+        if(id <= 0)
+        {
+            throw new ArgumentOutOfRangeException("id");
+        }
         var result = await _dbContext.Games.FirstOrDefaultAsync(e => e.Id == id);
         if (result == null)
         {
@@ -72,6 +76,10 @@ public class GameService : IGameServiceBase
 
     public async Task<IActionResult> Update(int id, GameDto dto)
     {
+        if(id <= 0)
+        {
+            throw new ArgumentOutOfRangeException("id");
+        }
         Console.WriteLine(dto.Price);
         var gameToUpdate = await _dbContext.Games.FindAsync(id);
         if (gameToUpdate == null)
@@ -105,6 +113,10 @@ public class GameService : IGameServiceBase
 
     public async Task<IActionResult> DeleteFromLibary(int id,string userid)
     {
+        if(id <= 0)
+        {
+            throw new ArgumentOutOfRangeException("id");
+        }
         var userGame = await _dbContext.userGames.FirstOrDefaultAsync(ug => ug.UserId == userid && ug.GameId == id);
         if(userGame == null)
         {
