@@ -40,7 +40,7 @@ public class GameService : IGameServiceBase
             Description = dto.Description,
             Devoloper = dto.Devoloper,
             Publisher = dto.Publisher,
-            Price = dto.Price,
+            Price =dto.Price,
             ReleaseDate = dto.ReleaseDate,
             Genre = dto.Genre,
         };      

@@ -80,6 +80,7 @@ public class GameController : Controller
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Update(int id, [FromBody]GameDto dto)
     {
+        Console.WriteLine(dto.Title);
         try
         {
             var game = await gameService.GetById(id);

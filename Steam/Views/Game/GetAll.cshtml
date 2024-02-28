@@ -6,7 +6,7 @@
     <div>
         <button class="btn btn-secondary" onclick="Back()">Back</button>
     </div>
-<div class="d-inline-flex p-2">
+<div class="d-flex flex-wrap" style="max-height:500px">
 @if(Model is null || Model.Any() == false)
 {
     <p>Nothing is here..</p>
@@ -16,9 +16,9 @@ else
     foreach(var item in Model)
     {
         <div class="p-2">
-                <div class="card bg-dark" style="width: 18rem;" onclick="showGameDetails(@item.Id)" style="max-height: 200px;">
+                <div class="card bg-dark" style="width: 18rem;" onclick="showGameDetails(@item.Id)">
                     <img src="@item.GameImageUrl" class="card-img-top" alt="Game Image" style="max-height: 400px; max-width: 500px">
-                    <div class="card-body">
+                    <div class="card-body" style="max-height:200px; overflow: hidden;">
                         <h5 class="card-title text-white-50">@item.Title</h5>
                             <p class="card-text text-white-50">@item.Description</p>
                             <p class="card-text text-white-50">@item.Price</p>

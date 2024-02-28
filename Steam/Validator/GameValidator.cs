@@ -18,7 +18,7 @@ public class GameValidator : AbstractValidator<GameDto>
 
         RuleFor(game => game.Description)
             .NotEmpty().WithMessage("The Description is required.")
-            .Length(1,200).WithMessage("The Description length must be less than or equal to 200.");
+            .Length(1,400).WithMessage("The Description length must be less than or equal to 200.");
 
         RuleFor(game => game.Devoloper)
             .NotEmpty().WithMessage("The Developer is required.")
