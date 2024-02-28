@@ -17,7 +17,7 @@ public class AdminPanelService : IAdminPanel
         this.userManager = user;
     }
 
-    public async Task<IActionResult> BanUserById(string id)
+    public async Task BanUserById(string id)
     {
         var user = await userManager.FindByIdAsync(id);
         if(user == null)
@@ -25,7 +25,6 @@ public class AdminPanelService : IAdminPanel
             throw new NullReferenceException($"User not found by id {id}");
         }
         await userManager.DeleteAsync(user);
-        return new OkResult();
     }
 
     public async Task<IEnumerable<User>> GetAllUser()

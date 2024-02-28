@@ -45,23 +45,28 @@ public class UserService : IUserServiceBase
         return usersWithoutAdminRole;
     }
 
-    public async Task<IActionResult> Update(UpdateDto dto, User user)
+    public async Task Update(UpdateDto dto, User user)
     {
         user.AvatarUrl = dto.AvatarUrl;
         await userManager.UpdateAsync(user);
         if (dto.Password is null || dto.Password.IsNullOrEmpty() || dto.OldPassword is null || dto.OldPassword.IsNullOrEmpty())
         {
-            return new OkResult();
+            return;
         }
         else
         {
             await userManager.ChangePasswordAsync(user,dto.OldPassword,dto.Password);
-            return new OkResult();
+            return;
         }
     }
 
     public async Task<IEnumerable<User>> Search(string username)
     {
+        if (string.IsNullOrWhiteSpace(username))
+        {
+            var alluser = _dbContext.Users.OfType<User>();
+            return alluser;
+        }
         var users = _dbContext.Users.OfType<User>().Where(x => x.UserName.Contains(username));
         return users;
     }

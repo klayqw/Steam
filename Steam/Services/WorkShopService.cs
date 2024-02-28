@@ -20,7 +20,7 @@ public class WorkShopService : IWorkShopServiceBase
         _notificationService = notificationService;
     }
 
-    public async Task<IActionResult> Add(WorkShopDto workShopDto,string creator)
+    public async Task Add(WorkShopDto workShopDto,string creator)
     {
         await _dbContext.workShops.AddAsync(new WorkShop()
         {
@@ -32,14 +32,13 @@ public class WorkShopService : IWorkShopServiceBase
             Subscribers = 0,
         });
         await _dbContext.SaveChangesAsync();
-        return new OkResult();
     }
 
-    public async Task<IActionResult> AddToSub(string id, int workshopid)
+    public async Task AddToSub(string id, int workshopid)
     {
         if(_dbContext.userWorkShopSubs.Any(uws => uws.UserId == id && uws.WorkShopItemId == workshopid))
         {
-            return new BadRequestResult();
+            return;
         }
         var toedit = await _dbContext.workShops.FindAsync(workshopid);
         toedit.Subscribers += 1;
@@ -50,10 +49,9 @@ public class WorkShopService : IWorkShopServiceBase
         };
         await _dbContext.userWorkShopSubs.AddAsync(toadd);
         await _dbContext.SaveChangesAsync();
-        return new OkResult();
     }
 
-    public async Task<IActionResult> Delete(int id,HttpContext context)
+    public async Task Delete(int id,HttpContext context)
     {
         var todelete = await _dbContext.workShops.FindAsync(id);
         if(context.User.Identity.Name == todelete.Creator || context.User.IsInRole("Admin"))
@@ -77,11 +75,10 @@ public class WorkShopService : IWorkShopServiceBase
            
             _dbContext.workShops.Remove(todelete);
             await _dbContext.SaveChangesAsync();
-            return new OkResult();
         }
         else
         {
-            return new BadRequestResult();
+            return;
         }
     }
 
@@ -113,17 +110,16 @@ public class WorkShopService : IWorkShopServiceBase
         return result;
     }
 
-    public async Task<IActionResult> UnFollow(int id, string userid)
+    public async Task UnFollow(int id, string userid)
     {
         var userWorkShopSubToRemove = await _dbContext.userWorkShopSubs.FirstOrDefaultAsync(uw => uw.UserId == userid && uw.WorkShopItemId == id);
         _dbContext.userWorkShopSubs.Remove(userWorkShopSubToRemove);
         var toedit = await _dbContext.workShops.FindAsync(id);
         toedit.Subscribers -= 1;
         await _dbContext.SaveChangesAsync();
-        return new OkResult();
     }
 
-    public async Task<IActionResult> Update(WorkShopDto workShopDto, int id, HttpContext context)
+    public async Task Update(WorkShopDto workShopDto, int id, HttpContext context)
     {
         
         var gameToUpdate = await _dbContext.workShops.FindAsync(id);
@@ -148,11 +144,11 @@ public class WorkShopService : IWorkShopServiceBase
             gameToUpdate.Title = workShopDto.Title;
             gameToUpdate.Description = workShopDto.Description;
             await _dbContext.SaveChangesAsync();
-            return new OkResult();
+            return;
         }
         else
         {
-            return new BadRequestResult();
+            return;
         }
     }
 }

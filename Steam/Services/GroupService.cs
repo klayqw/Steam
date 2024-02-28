@@ -20,7 +20,7 @@ public class GroupService : IGroupServices
         _notificationService = notificationService;
     }
 
-    public async Task<IActionResult> Add(GroupDto dto,string creator)
+    public async Task Add(GroupDto dto,string creator)
     {
         await _dbContext.Groups.AddAsync(new Group()
         {
@@ -34,10 +34,9 @@ public class GroupService : IGroupServices
         var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == creator);
         var item = await _dbContext.Groups.FirstOrDefaultAsync(x => x.Name == dto.Name);
         await JoinInGroup(item.Id, user.Id);
-        return new OkResult();
     }
 
-    public async Task<IActionResult> Delete(int id, HttpContext context)
+    public async Task Delete(int id, HttpContext context)
     {
         var todelete = await _dbContext.Groups.FindAsync(id);
         if(todelete == null)
@@ -64,9 +63,7 @@ public class GroupService : IGroupServices
             }
             _dbContext.Remove(todelete);
             await _dbContext.SaveChangesAsync();
-            return new OkResult();
         }
-        return new BadRequestResult();
     }
 
     public async Task<IEnumerable<Group>> GetAll()
@@ -104,11 +101,11 @@ public class GroupService : IGroupServices
         return usersInGroup;
     }
 
-    public async Task<IActionResult> JoinInGroup(int id, string userid)
+    public async Task JoinInGroup(int id, string userid)
     {
         if (_dbContext.userGroups.Any(uws => uws.UserId == userid && uws.GroupId == id))
         {
-            return new BadRequestResult();
+            return;
         }
         var toedit = await _dbContext.Groups.FindAsync(id);
         if (toedit == null)
@@ -123,10 +120,9 @@ public class GroupService : IGroupServices
         };
         await _dbContext.userGroups.AddAsync(toadd);
         await _dbContext.SaveChangesAsync();
-        return new OkResult();
     }
 
-    public async Task<IActionResult> Leave(int id, string userid)
+    public async Task Leave(int id, string userid)
     {
         var userWorkShopSubToRemove = await _dbContext.userGroups.FirstOrDefaultAsync(uw => uw.UserId == userid && uw.GroupId == id);
         var toedit = await _dbContext.Groups.FindAsync(id);
@@ -137,7 +133,7 @@ public class GroupService : IGroupServices
         } 
         if(toedit.Creator == user.UserName)
         {
-            return new BadRequestResult();
+            return;
         }
         _dbContext.userGroups.Remove(userWorkShopSubToRemove);
         toedit.MemberCount -= 1;
@@ -146,7 +142,6 @@ public class GroupService : IGroupServices
             _dbContext.Groups.Remove(toedit);
         }
         await _dbContext.SaveChangesAsync();
-        return new OkResult();
     }
 
     public async Task<IEnumerable<Group>> ShowJoinedGroup(string id)
@@ -161,7 +156,7 @@ public class GroupService : IGroupServices
 
     
 
-    public async Task<IActionResult> Update(GroupDto dto, int id, HttpContext context)
+    public async Task Update(GroupDto dto, int id, HttpContext context)
     {
         var toedit = await _dbContext.Groups.FindAsync(id);
         if(toedit == null)
@@ -190,8 +185,6 @@ public class GroupService : IGroupServices
             toedit.Description = dto.Description;
             toedit.GroupImageUrl = dto.GroupImageUrl;
             await _dbContext.SaveChangesAsync();
-            return new OkResult();
         }
-        return new BadRequestResult();
     }
 }

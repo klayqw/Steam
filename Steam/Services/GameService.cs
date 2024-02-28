@@ -30,7 +30,7 @@ public class GameService : IGameServiceBase
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<IActionResult> Add(GameDto dto)
+    public async Task Add(GameDto dto)
     {
         var game = new Game()
         {
@@ -46,7 +46,6 @@ public class GameService : IGameServiceBase
         };      
         await _dbContext.Games.AddAsync(game);
         await _dbContext.SaveChangesAsync();
-        return new OkResult();
 
     }
 
@@ -74,7 +73,7 @@ public class GameService : IGameServiceBase
         return result;
     }
 
-    public async Task<IActionResult> Update(int id, GameDto dto)
+    public async Task Update(int id, GameDto dto)
     {
         if(id <= 0)
         {
@@ -97,10 +96,9 @@ public class GameService : IGameServiceBase
         gameToUpdate.Genre = dto.Genre;
         _dbContext.Update(gameToUpdate);
         await _dbContext.SaveChangesAsync();
-        return new OkResult();
     }
 
-    public async Task<IActionResult> Buy(string id, int gameid)
+    public async Task Buy(string id, int gameid)
     {
         await _dbContext.userGames.AddAsync(new UserGames()
         {
@@ -108,10 +106,9 @@ public class GameService : IGameServiceBase
             GameId = gameid,
         });
         await _dbContext.SaveChangesAsync();
-        return new OkResult();
     }
 
-    public async Task<IActionResult> DeleteFromLibary(int id,string userid)
+    public async Task DeleteFromLibary(int id,string userid)
     {
         if(id <= 0)
         {
@@ -124,7 +121,6 @@ public class GameService : IGameServiceBase
         }
         _dbContext.Remove(userGame);
         await _dbContext.SaveChangesAsync();
-        return new OkResult();
     }
 }
 

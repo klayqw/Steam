@@ -3,9 +3,13 @@
     ViewData["Title"] = "All User";
 }
 
+<div>
+    <button class="btn btn-secondary" onclick="Back('/Game/GetAll')">Back</button>
+</div>
+
 @if (Model is null || Model.Any() == false)
 {
-    <p>No user in base</p>
+    <p class="text-white">No user in base</p>
 }
 
 else

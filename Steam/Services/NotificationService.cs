@@ -19,21 +19,19 @@ public class NotificationService : INotificationServiceBase
         this.userManager = userManager;
     }
 
-    public async Task<IActionResult> AddNotification(Notification notification)
+    public async Task AddNotification(Notification notification)
     {
         await _dbContext.notifications.AddAsync(notification);
         await _dbContext.SaveChangesAsync();
-        return new OkResult();
     }
 
-    public async Task<IActionResult> DeleteNotification(int notificationid)
+    public async Task DeleteNotification(int notificationid)
     {
         var todelete = await _dbContext.notifications.FindAsync(notificationid);
         _dbContext.notifications.Remove(todelete);
         await _dbContext.SaveChangesAsync();
-        return new OkResult();
     }
-    public async Task<IActionResult> AddNotificationToUser(string id, int notificationid)
+    public async Task AddNotificationToUser(string id, int notificationid)
     {
         var userNotification = new UserNotifications
         {
@@ -43,7 +41,6 @@ public class NotificationService : INotificationServiceBase
 
         await _dbContext.userNotifications.AddAsync(userNotification);
         await _dbContext.SaveChangesAsync();
-        return new OkResult();
     }
 
     public async Task<IEnumerable<Notification>> GetAllNotificationUser(string id)
@@ -55,14 +52,13 @@ public class NotificationService : INotificationServiceBase
         return notifications;
     }
 
-    public async Task<IActionResult> RemoveNotificationFromUser(string id, int notificationid)
+    public async Task RemoveNotificationFromUser(string id, int notificationid)
     {
         var userNotification = await _dbContext.userNotifications
            .FirstOrDefaultAsync(un => un.UserId == id && un.NotificationId == notificationid);
         _dbContext.userNotifications.Remove(userNotification);
         await DeleteNotification(notificationid);
         await _dbContext.SaveChangesAsync();
-        return new OkResult();
     }
 
 }
