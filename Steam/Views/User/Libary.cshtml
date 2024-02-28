@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Game>
+@{
+    ViewData["Title"] = "Libary";
+}
+
+@if (Model is null || !Model.Any())
+{
+    <p class="text-white">Nothing here..</p>
+}
+else
+{
+    <div class="d-inline-flex">
+        @foreach (var item in Model)
+        {
+            <div class="p-2">
+                <div class="card bg-dark" style="width: 18rem;" onclick="showGameDetails('@item.Id')" style="max-height: 200px;">
+                    <img src="@item.GameImageUrl" class="card-img-top" alt="Game Image">
+                    <div class="card-body">
+                        <h5 class="card-title text-white-50">@item.Title</h5>
+                        <p class="card-text text-white-50">@item.Description</p>
+                        <p class="card-text text-white-50">@item.Price</p>
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-secondary m-2" onclick="DeleteGameFromLibary(@item.Id)">Delete game from Libary</button>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<div id="deletefromlibary" class="modal fade bg-transparent bg-dark" role="dialog">
+    <div class="modal-dialog bg-dark">
+        <div class="modal-content bg-dark">
+            <div class="modal-header">
+                <h4 class="modal-title text-white">Game was Deleted</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-white">Game was success Deleted!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeBtn" data-dismiss="modal" onclick="CloseModel(deletefromlibary)">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

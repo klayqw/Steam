@@ -1,0 +1,40 @@
+﻿@model IEnumerable<User>
+@{
+    ViewData["Title"] = "All User";
+}
+
+<div>
+    <button class="btn btn-secondary" onclick="Back('/Game/GetAll')">Back</button>
+</div>
+
+@if (Model is null || Model.Any() == false)
+{
+    <p class="text-white">No user in base</p>
+}
+
+else
+{
+    <div class="d-inline-flex">
+    @foreach(var item in Model)
+    {
+        <div class="p-2">
+
+                <div class="card bg-dark" style="width: 18rem;" onclick="GoToWithId('/User/ProfileById','@item.Id')" style="max-height: 200px;">
+            <img src="@item.AvatarUrl" class="card-img-top" alt="Game Image">
+            <div class="card-body">
+                <h5 class="card-title text-white">@item.Id</h5>
+                <p class="card-text text-white">@item.Email</p>
+                <p class="card-text text-white">@item.UserName</p>
+            </div>
+        </div>
+                <button class="btn btn-danger" onclick="Ban('@item.Id')">Ban</button>
+                <button class="btn btn-danger" onclick="GoToWithId('/User/UpdateById','@item.Id')">Edit</button>
+        </div>
+    }
+    </div>
+    <div>
+        <button class="btn btn-info" onclick="Back('/Admin/Panel')">Back</button>
+    </div>
+}
+
+

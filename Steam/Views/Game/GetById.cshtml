@@ -1,0 +1,74 @@
+﻿@model BuyViewModel
+@{
+    ViewData["Title"] = "All Info";
+}
+
+<style>
+
+    body::after {
+        background-color: black;
+        opacity: 0.5; /* устанавливаем прозрачность */
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+
+    .overlay{
+        position: relative;
+        z-index: 1;
+    }
+</style>
+
+
+<body class="bg-transparen" style="background-image: url('@Model.game.GamePreviewUrl'); background-size: cover; background-repeat: no-repeat; background-position: center;">
+    <div class="row overlay  bg-dark bg-opacity-50 rounded-2">
+        <div class="col-lg-3">
+            <img src="@Model.game.GameImageUrl" class="img-fluid" alt="Game Image">
+        </div>
+        <div class="col-lg-9" >
+            <div class="card bg-transparent text-white border-0" >
+                <div class="card-body bg-transparen" >
+                    <h5 class="card-title">@Model.game.Title.ToUpper()</h5>
+                    <p class="card-text">@Model.game.Description</p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item bg-transparent text-white">Developer: @Model.game.Devoloper</li>
+                        <li class="list-group-item bg-transparent text-white">Publisher: @Model.game.Publisher</li>
+                        <li class="list-group-item bg-transparent text-white">Price: @Model.game.Price</li>
+                        <li class="list-group-item bg-transparent text-white">Release Date: @Model.game.ReleaseDate.ToShortDateString()</li>
+                        <li class="list-group-item bg-transparent text-white">Genre: @Model.game.Genre</li>
+                    </ul>
+                    @if (Model.UserGames.Contains(Model.game))
+                    {
+                        <button type="button" class="btn btn-primary mt-2">All Ready in your Library</button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-primary mt-2" onclick="Buy(@Model.game.Id)">Buy</button>
+                    }
+                    <button type="button" class="btn btn-primary mt-2" onclick="Back('/Game/GetAll')">Back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="buyModal" class="modal fade bg-transparent" role="dialog" >
+        <div class="modal-dialog bg-dark">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
+                    <h4 class="modal-title text-white">Congratulations!</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="text-white">You have successfully purchased the game.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="closeBtn" data-dismiss="modal" onclick="Close()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+

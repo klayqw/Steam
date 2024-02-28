@@ -1,0 +1,62 @@
+﻿@model IEnumerable<WorkShop>
+@{
+    ViewData["Title"] = "WorkShop";
+}
+
+
+    <div>
+        <button class="btn btn-secondary" onclick="Back('/')">Back</button>
+        <button class="btn btn-secondary mr-2" onclick="AddWorkShop()">Create WorkShop Item</button>
+        <button class="btn btn-secondary mr-2" onclick="ShowWorkShop()">Show my Creations</button>
+        <button class="btn btn-secondary mr-2" onclick="Back('/WorkShop/ShowSub')">Show my Sub</button>
+    </div>
+
+    @if (Model is null || Model.Any() == false)
+    {
+    <p class="text-white">Nothing is here..</p>
+    }
+    else
+    {
+    <div class="d-flex flex-wrap p-2 bg-dark">
+            @foreach (var item in Model)
+            {
+                <div>
+                
+                <div class="card bg-dark mb-3" style="max-width: 18rem;" onclick="showWorkShopDetails(@item.Id)">
+                    <div class="card-header text-white">@item.Title</div>
+                <div class="card-body text-white" style="max-height:200px; overflow: hidden;">
+                        <p class="card-text">@item.Description</p>
+                        <p class="card-text">@item.Creator</p>
+                    </div>                   
+                </div>
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="card-footer bg-dark text-white">
+                    <button class="btn btn-secondary mr-2" onclick="DeleteWorkShop(@item.Id)">Delete</button>
+                    <button class="btn btn-secondary" onclick="UpdateWorkShopView(@item.Id)">Update</button>
+                </div>
+            }
+            </div>
+            }
+        </div>
+    }
+
+
+
+
+
+<div id="deleteworkshop" class="modal fade bg-transparent bg-dark" role="dialog">
+    <div class="modal-dialog bg-dark">
+        <div class="modal-content bg-dark">
+            <div class="modal-header">
+                <h4 class="modal-title text-white">Delete Workshop item!</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-white">You have successfully delete workshop item</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeBtn" data-dismiss="modal" onclick="CloseModel(deleteworkshop)">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
