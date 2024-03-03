@@ -1,0 +1,18 @@
+﻿@model Game
+@{
+    ViewData["Title"] = "GetById";
+    
+}
+
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Title</h5>
+        <p class="card-text">@Model.Description</p>
+        <p class="card-text">Devoloper: Model.Devoloper</p>
+        <p class="card-text">Publisher: @Model.Publisher</p>
+        <p class="card-text">Price: @Model.Price</p>
+        <p class="card-text">Release Date: @Model.ReleaseDate</p>
+    </div>
+</div>
+
+<a asp-action="GetAll" asp-controller="Game">Back</a>

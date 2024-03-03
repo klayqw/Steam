@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "AddGame";
+    string Title = string.Empty;
+    string Description = string.Empty;
+    string Devoloper = string.Empty;
+    string Publisher = string.Empty;
+    double Price = 0;
+    DateTime ReleaseDate = DateTime.Now;
+    string Genre = string.Empty;
+}
+
+<form method="post" asp-action="AddGame" asp-controller="Game">
+    <div class="mb-3">
+        <label asp-for="@Title" class="form-label">Title</label>
+        <input type="text" class="form-control" asp-for="@Title">
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="@Description" class="form-label">Description</label>
+        <input type="text" class="form-control" asp-for="@Description">
+    </div>
+    <div class="mb-3">
+        <label asp-for="@Devoloper" class="form-label">Devoloper</label>
+        <input type="text" class="form-control" asp-for="@Devoloper">
+    </div>
+    <div class="mb-3">
+        <label asp-for="@Publisher" class="form-label">Publisher</label>
+        <input type="text" class="form-control" asp-for="@Publisher">
+    </div>
+    <div class="mb-3">
+        <label asp-for="@Price" class="form-label">Price</label>
+        <input type="text" class="form-control" asp-for="@Price">
+    </div>
+    <div class="mb-3">
+        <label asp-for="@Genre" class="form-label">Genre</label>
+        <input type="text" class="form-control" asp-for="@Genre">
+    </div>
+    <div class="mb-3">
+        <label asp-for="@ReleaseDate" class="form-label">Release Date</label>
+        <input type="date" class="form-control" asp-for="@ReleaseDate">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <a asp-action="Index" asp-controller="Home">Back</a>
+</form>
