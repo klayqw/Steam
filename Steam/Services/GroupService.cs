@@ -6,6 +6,7 @@ using Steam.Dto;
 using Steam.Models;
 using Steam.Models.ManyTable;
 using Steam.Services.Base;
+using Steam.ViewModel;
 using System.Security.Claims;
 
 namespace Steam.Services;
@@ -34,6 +35,19 @@ public class GroupService : IGroupServices
         var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == creator);
         var item = await _dbContext.Groups.FirstOrDefaultAsync(x => x.Name == dto.Name);
         await JoinInGroup(item.Id, user.Id);
+    }
+
+    public async Task AddMessage(MessageDto message)
+    {
+        Console.WriteLine(message.GroupId);
+        await _dbContext.GroupChat.AddAsync(new GroupChat()
+        {
+            GroupId = message.GroupId,
+            MessageContent = message.Message,
+            UserId = message.UserId,
+        });
+        await _dbContext.SaveChangesAsync();
+        
     }
 
     public async Task Delete(int id, HttpContext context)
@@ -74,6 +88,29 @@ public class GroupService : IGroupServices
             throw new NullReferenceException("Problems in database");
         }
         return result;
+    }
+
+    public async Task<IEnumerable<Message>> GetAllMesageFromChat(int id)
+    {
+        var chat = await _dbContext.GroupChat
+                               .Include(gc => gc.User) 
+                               .Where(gc => gc.GroupId == id)
+                               .ToListAsync();
+        IEnumerable<Message> messages = new List<Message>();
+        foreach(var message in chat)
+        {
+            if(message.GroupId == id)
+            {
+                messages = messages.Append(new Message()
+                {
+                    usersended = message.User,
+                    date = message.SentAt,
+                    message = message.MessageContent,
+                });
+            }
+        }
+        Console.WriteLine(messages.Count());
+        return messages;
     }
 
     public async Task<Group> GetById(int id)
@@ -187,4 +224,5 @@ public class GroupService : IGroupServices
             await _dbContext.SaveChangesAsync();
         }
     }
+
 }

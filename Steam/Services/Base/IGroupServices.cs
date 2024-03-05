@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Steam.Dto;
 using Steam.Models;
+using Steam.ViewModel;
 
 namespace Steam.Services.Base;
 
@@ -16,4 +17,6 @@ public interface IGroupServices
     public Task Delete(int id, HttpContext context);
     public Task Update(GroupDto dto,int id, HttpContext context);
     public Task<IEnumerable<User>> GetUsersInGroup(int id);
+    public Task<IEnumerable<Message>> GetAllMesageFromChat(int id);
+    public Task AddMessage(MessageDto message);
 }

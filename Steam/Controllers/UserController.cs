@@ -40,13 +40,19 @@ public class UserController : Controller
         var user = await this.userManager.FindByNameAsync(dto.Login);
 
         if (user == null)
-        {
-            return BadRequest();
+        {          
+            ModelState.AddModelError("Wrong Data", "Wrong login or password");
+            
+
+            return View("Login");
         }
         var result = await this.signInManager.PasswordSignInAsync(user, dto.Password, true, true);
 
         if (result.Succeeded == false)
-            return BadRequest();
+        {
+            ModelState.AddModelError("Wrong Data", "Wrong login or password");
+            return View("Login");
+        }
 
         return Redirect("/");
     }

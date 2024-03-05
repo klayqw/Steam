@@ -19,6 +19,28 @@ public class GroupController : Controller
     }
 
     [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> Chat(int id)
+    {
+        var message = await groupService.GetAllMesageFromChat(id);
+        return View(new MessageViewModel()
+        {
+            messages = message,
+            Groupid = id
+        });
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> Message([FromBody]MessageDto message)
+    {
+        Console.WriteLine(message.Message);
+        message.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        await groupService.AddMessage(message);
+        return RedirectToAction("Chat",message.GroupId);
+    }
+
+    [HttpGet]
     public async Task<IActionResult> GetAll()
     {
         try

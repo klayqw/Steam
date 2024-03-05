@@ -18,4 +18,5 @@ public class Group
     public string Creator { get; set; }
    
     public ICollection<UserGroups> UserGroups { get; set; }
+    public ICollection<GroupChat> GroupChats { get; set; }
 }

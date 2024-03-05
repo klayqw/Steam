@@ -10,6 +10,7 @@ public class ErrorPageController : Controller
     [HttpGet]
     public IActionResult Error(string message)
     {
+       
         return View(new ErrorViewModel() { Message = message});
     }
 }

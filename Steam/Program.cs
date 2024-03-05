@@ -28,7 +28,15 @@ builder.Services.AddDbContext<SteamDBContext>(dbContextOptionsBuilder => {
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
     options.Password.RequiredLength = 8;
+    
 }).AddEntityFrameworkStores<SteamDBContext>();
+
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/User/Login";
+    options.AccessDeniedPath = "/ErrorPage/Error"; 
+});
 
 var app = builder.Build();
 
@@ -42,6 +50,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+
 
 app.UseRouting();
 

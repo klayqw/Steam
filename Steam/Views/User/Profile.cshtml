@@ -6,8 +6,8 @@
 <div class="container mt-3">
     <div class="row">
         <div class="col-md-4">
-            <div class="card bg-dark text-white">
-                <img src="@Model.user.AvatarUrl" class="card-img-top" alt="User Avatar">
+            <div class="card bg-dark text-white" style="max-height:200px;">
+                <img src="@Model.user.AvatarUrl" class="card-img-top" alt="User Avatar" style="max-height:200px; max-width:200px">
                 @if (Model.IsFriend)
                 {
                     <button class="btn btn-secondary" onclick="DeleteFriends('@Model.user.Id')">Remove from friends</button>
@@ -63,7 +63,7 @@
                 <ul class="list-group list-group-flush">
                     @if (Model.Friends is null || Model.Friends.Any() == false)
                     {
-                        <li class="list-group-item bg-dark text-white">No groups</li>
+                        <li class="list-group-item bg-dark text-white">No friends</li>
                     }
                     else
                     {

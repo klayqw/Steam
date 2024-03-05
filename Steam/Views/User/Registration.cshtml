@@ -4,33 +4,40 @@
     ViewData["Title"] = "Registration";
 }
 
-<h5 class="text-white">Registration</h5>
+<body style="background-image: url('https://www.pcmgames.com/wp-content/uploads/2019/06/STEAM-2019.jpg'); background-size: cover; background-repeat: no-repeat; background-position: center;">
 
-<form asp-action="Registration" method="post" class="w-50 p-3">
-    <div asp-validation-summary="All"></div>
+<div class="container">
+        <div class="row justify-content-center ">
+            <div class="col-md-6 bg-dark bg-opacity-75">
+            <h5 class="text-center text-white">@ViewData["Title"]</h5>
 
-    <div></div>
+            <form asp-action="Registration" method="post" class="p-3 border rounded">
+                <div asp-validation-summary="All" class="text-white"></div>
 
-    <label asp-for="Email" class="form-label  text-white">Email</label>
-    <input class="form-control" asp-for="Email" type="email" class="form-control">
-    <span asp-validation-for="Email"></span>
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label text-white">Email</label>
+                    <input class="form-control" asp-for="Email" type="email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
 
-    <div></div>
+                <div class="mb-3">
+                    <label asp-for="Login" class="form-label text-white">Username</label>
+                    <input class="form-control" asp-for="Login" type="text">
+                    <span asp-validation-for="Login" class="text-danger"></span>
+                </div>
 
-    <label asp-for="Login" class="form-label  text-white">Username</label>
-    <input class="form-control" asp-for="Login" type="text" class="form-control">
-    <span asp-validation-for="Login"></span>
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label text-white">Password</label>
+                    <input class="form-control" asp-for="Password" type="password">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
 
-    <div></div>
-
-    <label asp-for="Password" class="form-label  text-white">Password</label>
-    <input class="form-control" asp-for="Password" type="password" class="form-control">
-    <span asp-validation-for="Password"></span>
-
-    <div></div>
-
-    <button class="d-block btn btn-success m-2" type="submit">Register</button>
-</form>
+                <button class="btn btn-success" type="submit">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial">

@@ -1,0 +1,77 @@
+﻿@model MessageViewModel
+
+@{
+    ViewData["Title"] = "Chat";
+    var dto = new MessageDto();
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="chat-box" id="chat-box">
+                @foreach (var msg in Model.messages.OrderBy(m => m.date))
+                {
+                    <div class="message">
+                        <div class="d-flex align-items-start justify-content-between">
+                            <div>
+                                <div class="d-flex align-items-center">
+                                    <img src="@msg.usersended.AvatarUrl" style="max-height:50px;max-width:50px" class="rounded-circle mr-2" />
+                                    <span class="sender text-white">@msg.usersended.UserName</span>
+                                </div>
+                                <span class="date text-white">@msg.date.ToString("HH:mm:ss")</span>
+                                <p class="text-white">@msg.message</p>
+                            </div>
+                            @if (@msg.usersended.Id == User.FindFirst(ClaimTypes.NameIdentifier)?.Value)
+                            {
+                                <button class="btn btn-danger btn-sm">Delete</button>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="fixed-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="input-group mt-3">
+                    <input type="hidden" id="groupId" value="@Model.Groupid" />
+                    <input type="text" class="form-control" id="messageInput" placeholder="Type your message here..." aria-label="Message" aria-describedby="button-send">
+                    <button class="btn btn-primary" type="button" id="button-send">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById("button-send").addEventListener("click", function () {
+            var groupId = document.getElementById("groupId").value;
+            var message = document.getElementById("messageInput").value;
+
+            var data = {
+                UserId: "",
+                Message: message,
+                GroupId: groupId
+            };
+
+            fetch("/Group/Message", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+}

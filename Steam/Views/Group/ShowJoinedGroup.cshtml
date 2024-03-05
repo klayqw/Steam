@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "My Groups";
 }
+
+
 @if(Model is null || Model.Any() == false)
 {
     <p class="text-white">Nothing is here..</p>
@@ -30,15 +32,12 @@ else
                         <button class="btn btn-primary" onclick="UpdateGroupView(@item.Id)">Update</button>
                 </div>
             }
-            
+              <button class="btn btn-secondary" onclick="GoToWithId('/Group/Chat',@item.Id)">Chat</button>
         </div>
         }
     </div>
 }
 
-<div>
-    <button class="btn btn-primary" onclick="Back('/Group/GetAll')">Back</button>
-</div>
 
 <div id="leaved" class="modal fade bg-transparent bg-dark" role="dialog">
     <div class="modal-dialog bg-dark">
