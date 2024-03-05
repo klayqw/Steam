@@ -61,4 +61,9 @@ public class NotificationService : INotificationServiceBase
         await _dbContext.SaveChangesAsync();
     }
 
+    public async Task<Notification> GetById(int id)
+    {
+        var notification = await _dbContext.notifications.FirstOrDefaultAsync(x => x.Id == id);
+        return notification;
+    }
 }

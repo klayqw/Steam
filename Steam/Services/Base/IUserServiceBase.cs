@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Steam.Dto;
 using Steam.Models;
+using Steam.ViewModel;
 
 namespace Steam.Services.Base;
 
@@ -12,4 +13,5 @@ public interface IUserServiceBase
     public Task<User> GetUser(string id);
     public Task Update(UpdateDto dto,User user);
     public Task<IEnumerable<User>> Search(string username);
+
 }

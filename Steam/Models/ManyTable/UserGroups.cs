@@ -1,4 +1,6 @@
-﻿namespace Steam.Models.ManyTable;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Steam.Models.ManyTable;
 
 public class UserGroups
 {

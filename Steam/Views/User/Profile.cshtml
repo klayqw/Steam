@@ -8,6 +8,25 @@
         <div class="col-md-4">
             <div class="card bg-dark text-white">
                 <img src="@Model.user.AvatarUrl" class="card-img-top" alt="User Avatar">
+                @if (Model.IsFriend)
+                {
+                    <button class="btn btn-secondary" onclick="DeleteFriends('@Model.user.Id')">Remove from friends</button>
+                }
+                else{
+                    @if (Model.IsRequested == true)
+                    {
+                        <button class="btn btn-secondary">Allready Sended</button>
+                    }
+                    else
+                    {
+                        @if (Model.IsAnotherUser == true)
+                        {
+                            <button class="btn btn-secondary" onclick="AddToFriend('@Model.user.Id')">Add to friend</button>
+                        }
+                    }
+                }
+                
+
                 <div class="card-body">
                     <h5 class="card-title ">@Model.user.UserName</h5>
                 </div>
@@ -41,9 +60,22 @@
                         }
                     }
                 </ul>
-                <div class="card-footer">
-                    <button type="button" class="btn btn-primary" onclick="Back('/Game/GetAll')">Back</button>
-                </div>
+                <ul class="list-group list-group-flush">
+                    @if (Model.Friends is null || Model.Friends.Any() == false)
+                    {
+                        <li class="list-group-item bg-dark text-white">No groups</li>
+                    }
+                    else
+                    {
+                        foreach (var item in Model.Friends)
+                        {
+                            <li class="list-group-item bg-dark text-white">
+                                <img src="@item.AvatarUrl" alt="Group Image" style="max-height: 100px;max-width: 100px;"> @item.UserName
+                            </li>
+                        }
+                    }
+                </ul>
+               
             </div>
         </div>
     </div>

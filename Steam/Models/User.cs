@@ -10,4 +10,5 @@ public class User : IdentityUser
     public ICollection<UserGroups> UserGroups { get; set; }
     public ICollection<UserWorkShopSub> UserWorkShopSub { get; set; }
     public ICollection<UserNotifications> UserNotifications { get; set; }
+    public ICollection<UserFriendship> Friendships { get; set; }
 }

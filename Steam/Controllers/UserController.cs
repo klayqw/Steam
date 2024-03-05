@@ -15,14 +15,17 @@ public class UserController : Controller
     private readonly RoleManager<IdentityRole> roleManager;
     private readonly SignInManager<IdentityUser> signInManager;
     private readonly IUserServiceBase userService;
+    private readonly IFriendService friendService;
+
     public UserController(UserManager<IdentityUser> userManager,
       RoleManager<IdentityRole> roleManager,
-      SignInManager<IdentityUser> signInManager,IUserServiceBase userService)
+      SignInManager<IdentityUser> signInManager,IUserServiceBase userService, IFriendService friendService)
     {
         this.userManager = userManager;
         this.roleManager = roleManager;
         this.signInManager = signInManager;
         this.userService = userService;
+        this.friendService = friendService;
     }
 
     [HttpGet]
@@ -119,6 +122,7 @@ public class UserController : Controller
     {
         var user = await userService.GetUser(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         var games = await userService.GetUserGames(user.Id);
+        var friends = await friendService.GetUserFriend(user.Id);
         var groups = await userService.GetUserGroups(user.Id);
 
         return View(new UserViewModel()
@@ -126,6 +130,9 @@ public class UserController : Controller
             user = user,
             games = games,
             groups = groups,
+            Friends = friends,
+            IsAnotherUser = false,
+            IsRequested = false
         });
 
     }
@@ -137,12 +144,17 @@ public class UserController : Controller
         var user = await userService.GetUser(id);
         var games = await userService.GetUserGames(user.Id);
         var groups = await userService.GetUserGroups(user.Id);
+        var friends = await friendService.GetUserFriend(user.Id);
 
         return View("Profile",new UserViewModel()
         {
             user = user,
             games = games,
             groups = groups,
+            Friends = friends,
+            IsAnotherUser = id != User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+            IsRequested = await friendService.IsAlreadyRequest(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, user.Id),
+            IsFriend = friendService.GetUserFriend(User.FindFirst(ClaimTypes.NameIdentifier)?.Value).Result.Any(x => x.Id == id)
         });
     }
 
@@ -154,13 +166,17 @@ public class UserController : Controller
         var user = await userService.GetUser(userid.Id);
         var games = await userService.GetUserGames(user.Id);
         var groups = await userService.GetUserGroups(user.Id);
+        var friends = await friendService.GetUserFriend(user.Id);
 
-        return View(new UserViewModel()
+        return View("Profile",new UserViewModel()
         {
             user = user,
             games = games,
             groups = groups,
-        });
+            Friends = friends,
+            IsAnotherUser = nickname != User.Identity.Name,
+            IsRequested = await friendService.IsAlreadyRequest(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, user.Id)
+        });;
 
     }
 
@@ -169,8 +185,9 @@ public class UserController : Controller
     public async Task<IActionResult> Libary()
     {
         var user = await userService.GetUser(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-        var games = await userService.GetUserGames(user.Id);
+        var games = await userService.GetUserGames(user.Id);        
         return View(games);
+       
     }
 
     [HttpGet]
@@ -225,5 +242,30 @@ public class UserController : Controller
             users = users,
             currentUser = user,
         });
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> RequestToFriend(string friendId)
+    {
+        Console.WriteLine("1");
+        await friendService.RequestToAdd(User.Identity.Name, User.FindFirst(ClaimTypes.NameIdentifier)?.Value, friendId);
+        return RedirectToAction("ProfileById", new { id = friendId});
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> Friends()
+    {
+        var friend = await friendService.GetUserFriend(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        return View(friend);
+    }
+
+    [HttpDelete]
+    [Authorize]
+    public async Task<IActionResult> DeleteFromFriends(string id)
+    {
+        await friendService.Delete(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, id);
+        return RedirectToAction("ProfileById", new { id });
     }
 }

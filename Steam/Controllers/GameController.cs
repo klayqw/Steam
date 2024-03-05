@@ -16,12 +16,16 @@ public class GameController : Controller
 {
     private readonly IGameServiceBase gameService;
     private readonly IUserServiceBase userService;
+    private readonly IFriendService friendService;
+    private readonly IUserServiceBase UserService;
     private readonly IValidator<GameDto> _validator;
-    public GameController(SteamDBContext dBContext, IGameServiceBase gameservices, IUserServiceBase userServiceBase, IValidator<GameDto> _validator)
+    public GameController(SteamDBContext dBContext, IGameServiceBase gameservices, IUserServiceBase userServiceBase, IValidator<GameDto> _validator, IFriendService friendService, IUserServiceBase userService)
     {
         this.gameService = gameservices;
         this.userService = userServiceBase;
         this._validator = _validator;
+        this.friendService = friendService;
+        this.userService = userService;
     }
 
     [HttpGet]
@@ -49,10 +53,12 @@ public class GameController : Controller
             var userid = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var usergames = await userService.GetUserGames(userid);
             var result = await gameService.GetById(id);
+            var friends = await friendService.GetUserFriend(userid);
             return View(new BuyViewModel()
             {
                 game = result,
                 UserGames = usergames,
+                Friends = friends,
             });
         }catch(Exception ex)
         {

@@ -18,6 +18,7 @@ builder.Services.AddScoped<IWorkShopServiceBase, WorkShopService>();
 builder.Services.AddScoped<IGroupServices, GroupService>();
 builder.Services.AddScoped<IUserServiceBase, UserService>();
 builder.Services.AddScoped<IAdminPanel, AdminPanelService>();
+builder.Services.AddScoped<IFriendService, FriendService>();
 builder.Services.AddScoped<INotificationServiceBase, NotificationService>();
 
 builder.Services.AddDbContext<SteamDBContext>(dbContextOptionsBuilder => {

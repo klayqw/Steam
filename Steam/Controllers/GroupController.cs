@@ -40,6 +40,7 @@ public class GroupController : Controller
         {
             var result = await groupService.GetById(id);
             var users = await groupService.GetUsersInGroup(id);
+
             var usergroups = await groupService.ShowJoinedGroup(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             
             return View(new GroupViewModel()
@@ -112,6 +113,7 @@ public class GroupController : Controller
         {
             Console.WriteLine(id);
             await groupService.JoinInGroup(id, User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
             return RedirectToAction("ShowJoinedGroup");
         }
         catch (Exception ex)

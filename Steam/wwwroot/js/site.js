@@ -5,9 +5,24 @@
     })
 }
 
+async function DeleteFriends(id) {
+    await fetch('/User/DeleteFromFriends?id=' + id, { method: "DELETE" });
+    location.reload();
+}
+
 async function DeleteNotification(id) {
     await fetch('/Notification/Delete?id=' + id, { method: "DELETE" })
-    
+    location.reload();
+}
+
+async function AddToFriend(id) {
+    await fetch('/User/RequestToFriend?friendId=' + id, { method: "POST" })
+}
+
+async function Accept(id) {
+    await fetch('/Notification/Accept?id=' + id, { method: "POST" })
+    await fetch('/Notification/Delete?id=' + id, { method: "DELETE" })
+    location.reload();
 }
 
 async function GoToWithId(url,id) {

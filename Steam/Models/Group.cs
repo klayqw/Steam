@@ -16,5 +16,6 @@ public class Group
     public int MemberCount { get; set; }
     [Required]
     public string Creator { get; set; }
+   
     public ICollection<UserGroups> UserGroups { get; set; }
 }

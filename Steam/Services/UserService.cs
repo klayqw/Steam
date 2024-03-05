@@ -6,6 +6,7 @@ using Steam.Data;
 using Steam.Dto;
 using Steam.Models;
 using Steam.Services.Base;
+using Steam.ViewModel;
 
 namespace Steam.Services;
 
@@ -70,4 +71,5 @@ public class UserService : IUserServiceBase
         var users = _dbContext.Users.OfType<User>().Where(x => x.UserName.Contains(username));
         return users;
     }
+    
 }

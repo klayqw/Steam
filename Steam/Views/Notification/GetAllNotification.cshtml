@@ -22,6 +22,10 @@ else
                 <div class="card-body">
                         <h5 class="card-title text-white">@item.Title</h5>
                         <p class="card-text text-white">@item.Description</p>
+                        @if(item.Type == "RequestId")
+                        {
+                            <button class="btn btn-secondary" onclick="Accept(@item.Id)">Accept</button>
+                        }
                         <p class="card-text text-white">@item.Type</p>
                 </div>
             </div>

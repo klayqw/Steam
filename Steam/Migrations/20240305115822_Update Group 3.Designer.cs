@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Steam.Data;
 
@@ -11,9 +12,11 @@ using Steam.Data;
 namespace Steam.Migrations
 {
     [DbContext(typeof(SteamDBContext))]
-    partial class SteamDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240305115822_Update Group 3")]
+    partial class UpdateGroup3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -373,6 +376,10 @@ namespace Steam.Migrations
                     b.Property<int>("GroupId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -469,25 +476,15 @@ namespace Steam.Migrations
 
             modelBuilder.Entity("Steam.Models.UserFriendship", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FriendId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "FriendId");
 
                     b.HasIndex("FriendId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Friendships");
                 });
