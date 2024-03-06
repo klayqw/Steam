@@ -19,4 +19,5 @@ public interface IGroupServices
     public Task<IEnumerable<User>> GetUsersInGroup(int id);
     public Task<IEnumerable<Message>> GetAllMesageFromChat(int id);
     public Task AddMessage(MessageDto message);
+    public Task DeleteMessage(int id,string username);
 }

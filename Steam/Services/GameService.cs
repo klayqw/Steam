@@ -122,5 +122,22 @@ public class GameService : IGameServiceBase
         _dbContext.Remove(userGame);
         await _dbContext.SaveChangesAsync();
     }
+
+    public async Task<IEnumerable<Comment>> GetComments(int gameid)
+    {
+        var comments = await _dbContext.Comment.Include(x => x.User).Where(y => y.GameId == gameid).ToArrayAsync();
+        return comments;    
+    }
+
+    public async Task AddComment(CommentDto commentDTO)
+    {
+        await _dbContext.Comment.AddAsync(new Comment()
+        {
+            UserId = commentDTO.UserId,
+            GameId = commentDTO.GameId,
+            Text = commentDTO.Comment,
+        });
+        await _dbContext.SaveChangesAsync();
+    }
 }
 

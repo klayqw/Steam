@@ -80,6 +80,20 @@ public class GroupService : IGroupServices
         }
     }
 
+    public async Task DeleteMessage(int id, string username)
+    {
+        var message = await _dbContext.GroupChat
+            .Include(m => m.User) 
+            .FirstOrDefaultAsync(m => m.Id == id);
+        if (message.User.UserName == username || username == "admin") 
+        {
+            _dbContext.Remove(message);
+            await _dbContext.SaveChangesAsync();
+            return;
+        }
+        throw new ArgumentException("You dont the owner of message!");
+    }
+
     public async Task<IEnumerable<Group>> GetAll()
     {
         var result = await _dbContext.Groups.ToArrayAsync();
@@ -103,6 +117,7 @@ public class GroupService : IGroupServices
             {
                 messages = messages.Append(new Message()
                 {
+                    Id = message.Id,    
                     usersended = message.User,
                     date = message.SentAt,
                     message = message.MessageContent,

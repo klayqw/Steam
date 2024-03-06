@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Chat";
     var dto = new MessageDto();
+    var usernickname = User.Identity.Name;
 }
 
 <div class="container">
@@ -21,9 +22,9 @@
                                 <span class="date text-white">@msg.date.ToString("HH:mm:ss")</span>
                                 <p class="text-white">@msg.message</p>
                             </div>
-                            @if (@msg.usersended.Id == User.FindFirst(ClaimTypes.NameIdentifier)?.Value)
+                            @if (@msg.usersended.Id == User.FindFirst(ClaimTypes.NameIdentifier)?.Value || Model.creator == usernickname || usernickname == "admin")
                             {
-                                <button class="btn btn-danger btn-sm">Delete</button>
+                                <button class="btn btn-danger btn-sm" onclick="DeleteMessage(@msg.Id)">Delete</button>
                             }
                         </div>
                     </div>
@@ -72,6 +73,12 @@
                     }
                 })
                 .catch(error => console.error('Error:', error));
+            location.reload();
         });
+
+        async function DeleteMessage(id){
+            await fetch('/Group/MessageDelete?id=' + id, { method: "DELETE" });
+            location.reload();
+        }
     </script>
 }

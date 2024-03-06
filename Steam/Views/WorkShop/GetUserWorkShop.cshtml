@@ -2,8 +2,8 @@
 @{
     ViewData["Title"] = "WorkShop";
 }
-<div class="container-fluid d-flex flex-wrap mt-3">
-        <div class="row">
+<div class="container-fluid mt-3">
+    <div class="row d-flex">
             @if (Model is null || Model.Any() == false)
             {
                 <div class="col-md-12 text-white">
@@ -15,7 +15,7 @@
                 @foreach (var item in Model)
                 {
                     <div class="col-md-4">
-                        <div class="card bg-dark border-2 text-white mb-3" style="max-width: 18rem;">
+                        <div class="card bg-dark border-2 text-white mb-3">
                             <div class="card-header">@item.Title</div>
                             <div class="card-body">
                                 <h5 class="card-title">@item.Description</h5>

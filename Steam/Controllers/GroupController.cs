@@ -25,6 +25,7 @@ public class GroupController : Controller
         var message = await groupService.GetAllMesageFromChat(id);
         return View(new MessageViewModel()
         {
+            creator = groupService.GetById(id).Result.Creator,
             messages = message,
             Groupid = id
         });
@@ -38,6 +39,21 @@ public class GroupController : Controller
         message.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         await groupService.AddMessage(message);
         return RedirectToAction("Chat",message.GroupId);
+    }
+
+    [HttpDelete]
+    [Authorize]
+
+    public async Task<IActionResult> MessageDelete(int id)
+    {
+        try
+        {
+            await groupService.DeleteMessage(id, User.Identity.Name);
+        }catch(Exception ex)
+        {
+            return RedirectToAction(actionName: "Error", controllerName: "ErrorPage", new { message = ex.Message });
+        }
+        return Ok();
     }
 
     [HttpGet]

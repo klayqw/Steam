@@ -54,6 +54,36 @@
         </div>
     </div>
 
+    <div class="bg-dark bg-opacity-50 fixed-bottom" style="max-height: 300px; overflow-y: auto;">
+        <div class="container mt-4">
+            <h5 class="text-white">Write a comment:</h5>
+            <div class="form-group">
+                <input class="form-control" id="commentTextArea" rows="1" placeholder="Write your comment here..."></input>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="postComment()">Post Comment</button>
+        </div>
+        <div class="container mt-4">
+            <h5 class="text-white">Comments:</h5>
+            <div class="row">
+                @foreach (var comment in Model.Comments)
+                {
+                    <div class="col-12 mb-3">
+                        <div class="card bg-transparent border-0">
+                            <div class="card-body d-flex align-items-center text-white">
+                                <img src="@comment.User.AvatarUrl" class="rounded-circle" style="width: 50px; height: 50px;" />
+                                <div class="ml-3">
+                                    <p class="font-weight-bold mb-0 text-white">@comment.User.UserName</p>
+                                    <p class="text-white">@comment.Text</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+     
+    </div>
+
     <div id="buyModal" class="modal fade bg-transparent" role="dialog" >
         <div class="modal-dialog bg-dark">
             <div class="modal-content bg-dark">
@@ -71,4 +101,30 @@
     </div>
 </body>
 
+<script>
+    function postComment() {
+        var commentText = document.getElementById("commentTextArea").value;
 
+        var gameId = @Model.game.Id;
+        var userId = '@User.FindFirst(ClaimTypes.NameIdentifier)?.Value';
+
+        var comment = {
+            GameId: gameId,
+            UserId: userId,
+            Comment: commentText
+        };
+
+        
+        var jsonComment = JSON.stringify(comment);
+        console.log(jsonComment)
+       
+        fetch('/Game/AddComment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: jsonComment
+        })
+        location.reload();
+    }
+</script>

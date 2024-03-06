@@ -5,6 +5,7 @@ using Steam.Dto;
 using Steam.Models;
 using Steam.Services.Base;
 using Steam.ViewModel;
+using Steam.ViewModel.Base;
 using System.Security.Claims;
 
 namespace Steam.Controllers;
@@ -191,8 +192,24 @@ public class UserController : Controller
     public async Task<IActionResult> Libary()
     {
         var user = await userService.GetUser(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-        var games = await userService.GetUserGames(user.Id);        
-        return View(games);
+        var games = await userService.GetUserGames(user.Id);
+        var friends = await friendService.GetUserFriend(user.Id);
+        Console.WriteLine(friends);
+        IEnumerable<FriendsGame> friendsgames = new List<FriendsGame>();
+        foreach (var friend in friends)
+        {
+            var gamesoffriend = await userService.GetUserGames(friend.Id);
+            friendsgames = friendsgames.Append(new FriendsGame()
+            {
+                user = friend,
+                games = gamesoffriend,
+            });
+        }
+        return View(new LibaryViewModel()
+        {
+            games = games,
+            friends = friendsgames,
+        });
        
     }
 

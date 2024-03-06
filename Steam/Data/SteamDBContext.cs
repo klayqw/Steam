@@ -18,6 +18,7 @@ public class SteamDBContext : IdentityDbContext<IdentityUser, IdentityRole, stri
     public DbSet<UserWorkShopSub> userWorkShopSubs { get; set; }
     public DbSet<UserFriendship> Friendships { get; set; }
     public DbSet<GroupChat> GroupChat { get; set; }
+    public DbSet<Comment> Comment { get; set; }
 
     public SteamDBContext(DbContextOptions<SteamDBContext> options) : base(options) { }
 

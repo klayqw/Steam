@@ -53,19 +53,27 @@ public class GameController : Controller
             var userid = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var usergames = await userService.GetUserGames(userid);
             var result = await gameService.GetById(id);
-            var friends = await friendService.GetUserFriend(userid);
+            var comments = await gameService.GetComments(id);
             return View(new BuyViewModel()
             {
                 game = result,
                 UserGames = usergames,
-                Friends = friends,
+                Comments = comments,
             });
         }catch(Exception ex)
         {
             return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
         }
         
-    }   
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> AddComment([FromBody]CommentDto comment)
+    {
+        await gameService.AddComment(comment);
+        return Ok();
+    }
 
     [HttpGet]
     [Authorize(Roles = "Admin")]
