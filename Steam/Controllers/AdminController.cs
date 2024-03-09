@@ -34,7 +34,7 @@ public class AdminController : Controller
         return View(result);
     }
 
-    [HttpDelete]
+    [HttpPut]
     public async Task<IActionResult> Ban(string id)
     {
         try
@@ -46,5 +46,12 @@ public class AdminController : Controller
             return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
         }
         return RedirectToAction("AllUser");
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> Unban(string id)
+    {
+        await adminPanel.UnBanUserById(id);
+        return Redirect("AllUser");
     }
 }

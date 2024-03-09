@@ -32,6 +32,17 @@ public class AdminPanelService : IAdminPanel
         await roleManager.CreateAsync(role);
         await userManager.AddToRoleAsync(user, role.Name);
     }
+    public async Task UnBanUserById(string id)
+    {
+        var user = await userManager.FindByIdAsync(id);
+        if (user == null)
+        {
+            throw new NullReferenceException($"User not found by id {id}");
+        }
+        var existingRoles = await userManager.GetRolesAsync(user);
+        await userManager.RemoveFromRolesAsync(user, existingRoles);
+        await userManager.AddToRoleAsync(user, "User");
+    }
 
     public async Task<IEnumerable<User>> GetAllUser()
     {

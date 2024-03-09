@@ -32,7 +32,14 @@ async function GoToWithId(url,id) {
         })
 }
 async function Ban(id = '') {
-    await fetch('/Admin/Ban?id=' + id, { method: "DELETE" })
+    await fetch('/Admin/Ban?id=' + id, { method: "PUT" })
+        .then(data => {
+            window.location.href = '/Admin/AllUser';
+        })
+}
+
+async function Unban(id = '') {
+    await fetch('/Admin/Unban?id=' + id, { method: "PUT" })
         .then(data => {
             window.location.href = '/Admin/AllUser';
         })
