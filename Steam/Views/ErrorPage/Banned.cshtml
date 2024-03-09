@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "ERROR";
+}
+    <style>
+        
+
+        .error-container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #dc3545;
+        }
+
+        p {
+            color: #333;
+        }
+    </style>
+
+    <div class="error-container">
+        <h1>Error</h1>
+        <p>You have been banned.</p>
+        <a class="btn btn-secondary" asp-area="" asp-controller="User" asp-action="Logout">Log out</a>
+    </div>
+

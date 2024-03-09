@@ -4,9 +4,6 @@
     var username = string.Empty;
 }
 
-<div>
-    <button class="btn btn-secondary" onclick="Back('/Game/GetAll')">Back</button>
-</div>
 <div class="container">
     <form method="post" asp-controller="User" asp-action="Search" class="form-inline justify-content-center my-3" asp-route-username="@username">
         <div class="input-group col-auto">
@@ -24,7 +21,7 @@
 
     else
     {
-        <div class="d-inline-flex">
+        <div class="d-flex flex-wrap">
             @foreach (var item in Model.users)
             {
                 if (Model.currentUser.UserName == item.UserName)
@@ -32,8 +29,8 @@
                     continue;
                 }
                 <div class="p-2">
-                    <div class="card bg-dark border-4" style="width: 18rem;" onclick="GoToWithId('/User/ProfileById','@item.Id')" style="max-height: 200px;">
-                        <img src="@item.AvatarUrl" class="card-img-top" alt="Game Image">
+                    <div class="card bg-dark border-4" style="max-width: 300px;" onclick="GoToWithId('/User/ProfileById','@item.Id')">
+                        <img src="@item.AvatarUrl" style="max-height:200px;max-width:150px" class="card-img-top" alt="Game Image">
                         <div class="card-body">
                             <p class="card-text text-white">@item.UserName</p>
                         </div>

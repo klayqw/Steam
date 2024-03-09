@@ -13,4 +13,10 @@ public class ErrorPageController : Controller
        
         return View(new ErrorViewModel() { Message = message});
     }
+    [HttpGet]
+    public IActionResult Banned()
+    {
+
+        return View();
+    }
 }

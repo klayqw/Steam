@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Steam.Data;
+using Steam.Middleware;
 using Steam.Services;
 using Steam.Services.Base;
 using System.Data.SqlClient;
@@ -32,6 +33,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
 }).AddEntityFrameworkStores<SteamDBContext>();
 
 
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/User/Login";
@@ -54,9 +56,9 @@ app.UseStaticFiles();
 
 
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseMiddleware<CheckIsBannedMiddleware>();
 
 app.MapControllerRoute(
     name: "default",

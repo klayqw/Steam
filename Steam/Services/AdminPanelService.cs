@@ -11,10 +11,12 @@ public class AdminPanelService : IAdminPanel
 {
     private readonly SteamDBContext steamDBContext;
     private readonly UserManager<IdentityUser> userManager;
-    public AdminPanelService(SteamDBContext steamDBContext, UserManager<IdentityUser> user) 
+    private readonly RoleManager<IdentityRole> roleManager;
+    public AdminPanelService(SteamDBContext steamDBContext, UserManager<IdentityUser> user,RoleManager<IdentityRole> role) 
     {
         this.steamDBContext = steamDBContext;
         this.userManager = user;
+        this.roleManager = role;
     }
 
     public async Task BanUserById(string id)
@@ -24,7 +26,11 @@ public class AdminPanelService : IAdminPanel
         {
             throw new NullReferenceException($"User not found by id {id}");
         }
-        await userManager.DeleteAsync(user);
+        var existingRoles = await userManager.GetRolesAsync(user);
+        await userManager.RemoveFromRolesAsync(user, existingRoles);
+        var role = new IdentityRole { Name = "Ban" };
+        await roleManager.CreateAsync(role);
+        await userManager.AddToRoleAsync(user, role.Name);
     }
 
     public async Task<IEnumerable<User>> GetAllUser()
