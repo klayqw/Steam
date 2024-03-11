@@ -6,13 +6,18 @@
 <div class="container mt-3">
     <div class="row">
         <div class="col-md-4">
+            <!-- Информация о пользователе -->
             <div class="card bg-dark text-white" style="max-height:200px;">
-                <img src="@Model.user.AvatarUrl" class="card-img-top" alt="User Avatar" style="max-height:200px; max-width:200px">
+                <img src="@Model.user.AvatarUrl" class="card-img-top" alt="User Avatar"
+                     style="max-height:200px; max-width:200px;
+            border: @(Model.user.IsOnline ? "2px solid #005e8a" /* темный голубой */ : "2px solid gray");">
+                <h5 class="text-white">Status: @(Model.user.IsOnline ? "Online" : "Offline")</h5>
                 @if (Model.IsFriend)
                 {
                     <button class="btn btn-secondary" onclick="DeleteFriends('@Model.user.Id')">Remove from friends</button>
                 }
-                else{
+                else
+                {
                     @if (Model.IsRequested == true)
                     {
                         <button class="btn btn-secondary">Allready Sended</button>
@@ -25,57 +30,73 @@
                         }
                     }
                 }
-                
-
                 <div class="card-body">
-                    <h5 class="card-title ">@Model.user.UserName</h5>
+                    <h5 class="card-title">@Model.user.UserName</h5>
                 </div>
-                <ul class="list-group list-group-flush">
-                    @if (Model.games is null || Model.games.Any() == false)
-                    {
-                        <li class="list-group-item bg-dark text-white">No games</li>
-                    }
-                    else
-                    {
-                        foreach (var item in Model.games)
-                        {
-                            <li class="list-group-item bg-dark text-white" onclick="GoToWithId('/Game/GetById',@item.Id)">
-                                <img src="@item.GameImageUrl" alt="Game Image" style="max-height: 100px;max-width: 100px;"> @item.Title
-                            </li>
-                        }
-                    }
-                </ul>
-                <ul class="list-group list-group-flush">
-                    @if (Model.groups is null || Model.groups.Any() == false)
-                    {
-                        <li class="list-group-item bg-dark text-white">No groups</li>
-                    }
-                    else
-                    {
-                        foreach (var item in Model.groups)
-                        {
-                            <li class="list-group-item bg-dark text-white">
-                                <img src="@item.GroupImageUrl" alt="Group Image" style="max-height: 100px;max-width: 100px;"> @item.Name
-                            </li>
-                        }
-                    }
-                </ul>
-                <ul class="list-group list-group-flush">
-                    @if (Model.Friends is null || Model.Friends.Any() == false)
-                    {
-                        <li class="list-group-item bg-dark text-white">No friends</li>
-                    }
-                    else
-                    {
-                        foreach (var item in Model.Friends)
-                        {
-                            <li class="list-group-item bg-dark text-white">
-                                <img src="@item.AvatarUrl" alt="Group Image" style="max-height: 100px;max-width: 100px;"> @item.UserName
-                            </li>
-                        }
-                    }
-                </ul>
-               
+            </div>
+        </div>
+        <div class="col-md-8">
+            <!-- Списки -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <!-- Список игр -->
+                        <ul class="list-group list-group-flush">
+                            <li><h5 class="text-white">Games</h5></li>
+                            @if (Model.games is null || Model.games.Any() == false)
+                            {
+                                <li class="list-group-item bg-dark text-white">No games</li>
+                            }
+                            else
+                            {
+                                foreach (var item in Model.games)
+                                {
+                                    <li class="list-group-item bg-dark text-white" onclick="GoToWithId('/Game/GetById',@item.Id)">
+                                        <img src="@item.GameImageUrl" alt="Game Image" style="max-height: 100px;max-width: 100px;"> @item.Title
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <ul class="list-group list-group-flush">
+                            <li><h5 class="text-white">Groups</h5></li>
+                            @if (Model.groups is null || Model.groups.Any() == false)
+                            {
+
+                                <li class="list-group-item bg-dark text-white">No groups</li>
+                            }
+                            else
+                            {
+                                foreach (var item in Model.groups)
+                                {
+                                    <li class="list-group-item bg-dark text-white" onclick="GoToWithId('/Group/GetById',@item.Id)">
+                                        <img src="@item.GroupImageUrl" alt="Group Image" style="max-height: 100px;max-width: 100px;"> @item.Name
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <!-- Список друзей -->
+                        <ul class="list-group list-group-flush">
+                            <li><h5 class="text-white">Friends</h5></li>
+                            @if (Model.Friends is null || Model.Friends.Any() == false)
+                            {
+                                <li class="list-group-item bg-dark text-white">No friends</li>
+                            }
+                            else
+                            {
+                                foreach (var item in Model.Friends)
+                                {
+                                    <li class="list-group-item bg-dark text-white" onclick="GoToWithId('/User/ProfileById','@item.Id')">
+                                        <img src="@item.AvatarUrl" alt="User Image" style="max-height: 100px;max-width: 100px;"> @item.UserName
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

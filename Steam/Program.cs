@@ -7,6 +7,7 @@ using Steam.Services;
 using Steam.Services.Base;
 using System.Data.SqlClient;
 using System.Reflection;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +36,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
 
 
 builder.Services.ConfigureApplicationCookie(options =>
-{
+{   
     options.LoginPath = "/User/Login";
     options.AccessDeniedPath = "/ErrorPage/Error"; 
 });

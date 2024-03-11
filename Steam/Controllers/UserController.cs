@@ -131,7 +131,7 @@ public class UserController : Controller
         var games = await userService.GetUserGames(user.Id);
         var friends = await friendService.GetUserFriend(user.Id);
         var groups = await userService.GetUserGroups(user.Id);
-
+        Console.WriteLine(user.IsOnline);
         return View(new UserViewModel()
         {
             user = user,
@@ -142,6 +142,22 @@ public class UserController : Controller
             IsRequested = false
         });
 
+    }
+
+    [HttpPut]
+    [Authorize]
+    public async Task<IActionResult> Join()
+    {
+        await userService.UpdateUserOnlineStatus(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, true);
+        return Ok();
+    }
+
+    [HttpPut]
+    [Authorize]
+    public async Task<IActionResult> Leave()
+    {
+        await userService.UpdateUserOnlineStatus(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, false);
+        return Ok();
     }
 
     [HttpGet]

@@ -1,3 +1,12 @@
 ﻿@{
     Layout = "_Layout";
 }
+
+<script>
+    window.addEventListener('load', function () {
+        fetch('/User/Join', { method: "PUT" })
+    });
+    window.addEventListener('unload', function (event) {
+        fetch('/User/Leave', { method: "PUT" })
+    });
+</script>

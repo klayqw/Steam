@@ -24,6 +24,7 @@ public class UserService : IUserServiceBase
     public async Task<User> GetUser(string id)
     {
         var user = await _dbContext.Users.OfType<User>().FirstOrDefaultAsync(x => x.Id == id);
+        Console.WriteLine(user.IsOnline);
         return user;
     }
 
@@ -71,5 +72,19 @@ public class UserService : IUserServiceBase
         var users = _dbContext.Users.OfType<User>().Where(x => x.UserName.Contains(username));
         return users;
     }
-    
+
+    public async Task UpdateUserOnlineStatus(string userid, bool status)
+    {
+        var user = await _dbContext.Users.OfType<User>().FirstOrDefaultAsync(x => x.Id == userid);
+        if(user == null)
+        {
+            return;
+        }
+        if (user.IsOnline == status)
+        {
+            return;
+        }
+        user.IsOnline = status;
+        await _dbContext.SaveChangesAsync();
+    }
 }

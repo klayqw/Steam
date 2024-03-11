@@ -13,5 +13,6 @@ public interface IUserServiceBase
     public Task<User> GetUser(string id);
     public Task Update(UpdateDto dto,User user);
     public Task<IEnumerable<User>> Search(string username);
+    public Task UpdateUserOnlineStatus(string userid, bool status);
 
 }
