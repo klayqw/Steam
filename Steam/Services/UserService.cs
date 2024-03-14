@@ -49,7 +49,6 @@ public class UserService : IUserServiceBase
 
     public async Task Update(UpdateDto dto, User user)
     {
-        user.AvatarUrl = dto.AvatarUrl;
         await userManager.UpdateAsync(user);
         if (dto.Password is null || dto.Password.IsNullOrEmpty() || dto.OldPassword is null || dto.OldPassword.IsNullOrEmpty())
         {
@@ -85,6 +84,13 @@ public class UserService : IUserServiceBase
             return;
         }
         user.IsOnline = status;
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task UpdateAvatar(string url,string id)
+    {
+        var user = await _dbContext.Users.OfType<User>().FirstOrDefaultAsync(x => x.Id == id);
+        user.AvatarUrl = url;
         await _dbContext.SaveChangesAsync();
     }
 }

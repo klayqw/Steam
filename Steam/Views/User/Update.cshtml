@@ -6,19 +6,14 @@
 
 <form class="w-50 p-3" id="updateUser">
     <div asp-validation-summary="All"></div>
+   
 
-    <label asp-for="@Model.AvatarUrl" class="form-label text-white">Avatar Url</label>
-    <input class="form-control" asp-for="@Model.AvatarUrl" type="text" class="form-control">
-    <span asp-validation-for="@Model.AvatarUrl"></span>
-
-    <div></div>
-
-        <label asp-for="@Model.Password" class="form-label  text-white">Password</label>
+    <label asp-for="@Model.Password" class="form-label  text-white">Password</label>
     <input class="form-control" asp-for="@Model.Password" type="password" class="form-control">
     <span asp-validation-for="@Model.Password"></span>
 
     <div></div>
-        <label asp-for="@Model.OldPassword" class="form-label  text-white">Old Password</label>
+    <label asp-for="@Model.OldPassword" class="form-label  text-white">Old Password</label>
     <input class="form-control" asp-for="@Model.OldPassword" type="password" class="form-control">
     <span asp-validation-for="@Model.OldPassword"></span>
 

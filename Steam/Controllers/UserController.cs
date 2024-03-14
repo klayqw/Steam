@@ -7,6 +7,8 @@ using Steam.Services.Base;
 using Steam.ViewModel;
 using Steam.ViewModel.Base;
 using System.Security.Claims;
+using System.Drawing;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Steam.Controllers;
 
@@ -71,7 +73,7 @@ public class UserController : Controller
         {
             Email = dto.Email,
             UserName = dto.Login,
-            AvatarUrl = "https://otvet.imgsmail.ru/download/u_5b13a2ab2b3112095c60260400df34ca_800.jpg",
+            AvatarUrl = "/uploads/default.jpg",
         };
         var result = await this.userManager.CreateAsync(newUser, dto.Password);
 
@@ -131,6 +133,7 @@ public class UserController : Controller
         var games = await userService.GetUserGames(user.Id);
         var friends = await friendService.GetUserFriend(user.Id);
         var groups = await userService.GetUserGroups(user.Id);
+
         Console.WriteLine(user.IsOnline);
         return View(new UserViewModel()
         {
@@ -243,7 +246,6 @@ public class UserController : Controller
         var user = await userService.GetUser(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         return View(new UpdateDto()
         {
-            AvatarUrl = user.AvatarUrl,
         });
     }
 
@@ -254,7 +256,6 @@ public class UserController : Controller
         var user = await userService.GetUser(id);
         return View("Update",new UpdateDto()
         {
-            AvatarUrl = user.AvatarUrl,
         });
     }
 
@@ -262,7 +263,6 @@ public class UserController : Controller
     [Authorize]
     public async Task<IActionResult> Update([FromBody]UpdateDto dto )
     {
-        Console.WriteLine(dto.AvatarUrl);
         var user = await userService.GetUser(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         await userService.Update(dto, user);
         return RedirectToAction("Profile");
@@ -307,4 +307,51 @@ public class UserController : Controller
         await friendService.Delete(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, id);
         return RedirectToAction("ProfileById", new { id });
     }
+
+    [HttpGet]
+    [Authorize]
+    public IActionResult ChangeAvatar()
+    {
+        return View();
+    }
+
+
+    [HttpPut]
+    [Authorize]
+    public async Task<IActionResult> ChangeAvatar(IFormFile avatar)
+    {
+        using (var image = Image.FromStream(avatar.OpenReadStream()))
+        {
+            if (image.Width > 800 || image.Height > 800)
+            {
+                ModelState.AddModelError(string.Empty, "Photo cannot be more than 600 x 600 pixels.");
+                return View("ChangeAvatar");
+            }
+        }
+
+        var userName = User.Identity.Name;
+        var fileName = $"{userName}{Path.GetExtension(avatar.FileName)}";
+
+        var destinationFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+        var destinationPath = Path.Combine(destinationFolder, fileName); 
+
+        if (System.IO.File.Exists(destinationPath))
+        {
+            System.IO.File.Delete(destinationPath);
+        }
+
+        Directory.CreateDirectory(destinationFolder);
+
+        using (var stream = new FileStream(destinationPath, FileMode.Create))
+        {
+            await avatar.CopyToAsync(stream);
+        }
+
+        var relativePath = "/uploads/" + fileName;
+
+        await userService.UpdateAvatar(relativePath, User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+        return RedirectToAction("Profile");
+    }
+
 }

@@ -14,5 +14,6 @@ public interface IUserServiceBase
     public Task Update(UpdateDto dto,User user);
     public Task<IEnumerable<User>> Search(string username);
     public Task UpdateUserOnlineStatus(string userid, bool status);
+    public Task UpdateAvatar(string url, string id);
 
 }
