@@ -30,6 +30,7 @@ public class WorkShopService : IWorkShopServiceBase
             Dislike = 0,
             Creator = creator,
             Subscribers = 0,
+            GameId = workShopDto.GameId,
         });
         await _dbContext.SaveChangesAsync();
     }
@@ -84,19 +85,23 @@ public class WorkShopService : IWorkShopServiceBase
 
     public async Task<IEnumerable<WorkShop>> GetAll()
     {
-        var result = await _dbContext.workShops.ToArrayAsync();
+        var result = await _dbContext.workShops
+            .Include(ws => ws.Game)
+            .ToArrayAsync();
         return result;
     }
 
     public async Task<WorkShop> GetById(int id)
     {
-        var result = await _dbContext.workShops.FirstOrDefaultAsync(w => w.Id == id);
+        var result = await _dbContext.workShops
+            .Include(ws => ws.Game)
+            .FirstOrDefaultAsync(w => w.Id == id);
         return result;
     }
 
     public async Task<IEnumerable<WorkShop>> GetUserWorkShop(string creator)
     {
-        var result = await _dbContext.workShops.Where(x => x.Creator == creator).ToArrayAsync();
+        var result = await _dbContext.workShops.Include(ws => ws.Game).Where(x => x.Creator == creator).ToArrayAsync();
         return result;
     }
 
@@ -104,6 +109,7 @@ public class WorkShopService : IWorkShopServiceBase
     {
         var result = await _dbContext.userWorkShopSubs
             .Include(uws => uws.WorkShopItem) 
+            .Include(w => w.WorkShopItem.Game)
             .Where(uws => uws.UserId == id)
             .Select(uws => uws.WorkShopItem)
             .ToArrayAsync();

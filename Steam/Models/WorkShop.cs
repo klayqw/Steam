@@ -17,4 +17,6 @@ public class WorkShop
     public int Subscribers { get; set; }
     [Required]
     public string Creator {  get; set; }    
+    public int GameId { get; set; }
+    public Game Game { get; set; }
 }

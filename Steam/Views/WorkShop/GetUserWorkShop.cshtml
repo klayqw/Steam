@@ -20,6 +20,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">@item.Description</h5>
                                 <p class="card-text">@item.Creator</p>
+                                <p class="card-text"><img src="@item.Game.GameImageUrl" style="max-height:100px;max-width:100px;" />@item.Game.Title</p>
                             </div>
                             <div class="card-footer">
                                 <button class="btn btn-primary" onclick="DeleteWorkShop(@item.Id)">Delete</button>

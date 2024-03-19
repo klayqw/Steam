@@ -6,4 +6,5 @@ public class WorkShopDto
 {
     public string Title { get; set; }
     public string Description { get; set; }
+    public int GameId { get; set; }
 }

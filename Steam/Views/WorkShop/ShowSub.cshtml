@@ -18,6 +18,7 @@
                         <h5 class="card-title text-white">@item.Title</h5>
                         <p class="card-text text-white">@item.Description</p>
                         <p class="card-text text-white">@item.Creator</p>
+                        <p class="card-text"><img src="@item.Game.GameImageUrl" style="max-height:100px;max-width:100px;" />@item.Game.Title</p>
                         <button class="btn btn-primary" onclick="UnFollow(@item.Id)">UnFollow</button>
                         @if (User.IsInRole("Admin"))
                         {

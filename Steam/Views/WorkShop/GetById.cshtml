@@ -12,6 +12,7 @@
                     <p class="card-text">@Model.item.Description</p>
                     <p class="card-text">Creator: @Model.item.Creator</p>
                     <p class="card-text">Subscribers: @Model.item.Subscribers</p>
+                    <p class="card-text"><img src="@Model.item.Game.GameImageUrl" style="max-height:100px;max-width:100px;" />@Model.item.Game.Title</p>
                 </div>
                 <div class="card-footer">
                     @if(Model.workShopUserItems.Contains(Model.item) == false)

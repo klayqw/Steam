@@ -1,6 +1,6 @@
 ﻿using Steam.Models;
 
-namespace Steam.ViewModel.Base;
+namespace Steam.ViewModel;
 
 public class FriendsGame
 {

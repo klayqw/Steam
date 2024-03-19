@@ -12,11 +12,13 @@ namespace Steam.Controllers;
 public class WorkShopController : Controller
 {
     private readonly IWorkShopServiceBase _workShopService;
+    private readonly IGameServiceBase _gameService;
     private readonly IValidator<WorkShopDto> _workShopValidator;
-    public WorkShopController(IWorkShopServiceBase workShopService, IValidator<WorkShopDto> _workShopValidator)
+    public WorkShopController(IWorkShopServiceBase workShopService, IValidator<WorkShopDto> _workShopValidator,IGameServiceBase gameServiceBase)
     {
         _workShopService = workShopService;
         this._workShopValidator = _workShopValidator;
+        this._gameService = gameServiceBase; 
     }
 
     [HttpGet]
@@ -54,9 +56,14 @@ public class WorkShopController : Controller
 
     [HttpGet]
     [Authorize]
-    public IActionResult Add()
+    public async Task<IActionResult> Add()
     {
-        return View(new WorkShopDto());
+        var games = await _gameService.GetAll();
+        return View(new WorkShopToAddViewModel()
+        {
+            Games = games,
+            WorkShopDto = new WorkShopDto()
+        });
     }
 
     [HttpPost]

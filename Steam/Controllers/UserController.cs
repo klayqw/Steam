@@ -5,7 +5,6 @@ using Steam.Dto;
 using Steam.Models;
 using Steam.Services.Base;
 using Steam.ViewModel;
-using Steam.ViewModel.Base;
 using System.Security.Claims;
 using System.Drawing;
 using static System.Runtime.InteropServices.JavaScript.JSType;

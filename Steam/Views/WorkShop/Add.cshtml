@@ -1,4 +1,4 @@
-﻿@model WorkShopDto
+﻿@model WorkShopToAddViewModel
 @{
     ViewData["Title"] = "Add";
 }
@@ -6,14 +6,27 @@
 
 <form asp-action="Add" asp-controller="WorkShop" method="post">
     <div class="mb-3">
-        <label class="form-label text-white" asp-for="Title">Title</label>
-        <input type="text" class="form-control" asp-for="Title">
-        <span class="text-danger" asp-validation-for="Title"></span>
+        <label class="form-label text-white" asp-for="@Model.WorkShopDto.Title">Title</label>
+        <input type="text" class="form-control" asp-for="@Model.WorkShopDto.Title">
+        <span class="text-danger" asp-validation-for="@Model.WorkShopDto.Title"></span>
     </div>   
     <div class="mb-3">
-            <label asp-for="Description" class="form-label text-white">Description</label>
-        <input type="text" asp-for="Description" class="form-control">
-        <span class="text-danger" asp-validation-for="Description"></span>
+        <label asp-for="@Model.WorkShopDto.Description" class="form-label text-white">Description</label>
+        <input type="text" asp-for="@Model.WorkShopDto.Description" class="form-control">
+        <span class="text-danger" asp-validation-for="@Model.WorkShopDto.Description"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="@Model.WorkShopDto.GameId" class="form-label text-white">Select Game</label>
+        <select asp-for="@Model.WorkShopDto.GameId" class="form-control">
+            <option value="">Select a game</option>
+            @foreach (var game in Model.Games)
+            {
+                <option value="@game.Id">
+                    @game.Title
+                </option>
+            }
+        </select>
+        <span class="text-danger" asp-validation-for="@Model.WorkShopDto.GameId"></span>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
