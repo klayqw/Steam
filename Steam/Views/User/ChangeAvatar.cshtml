@@ -35,7 +35,7 @@
             var img;
             var squareX = 0; // Начальные координаты квадрата
             var squareY = 0;
-            var squareSize = 800; // Размер квадрата (можно изменить по вашему усмотрению)
+            var squareSize = 600; // Размер квадрата (можно изменить по вашему усмотрению)
             var isDragging = false;
             var offsetX, offsetY;
 
@@ -56,6 +56,11 @@
                             $('#submitButton').show();
                             $('#cancelButton').show();
                             drawSquare(); // Рисуем квадрат на холсте
+
+                            // Если изображение меньше 600x600, отправляем его на сервер сразу
+                            if (img.width < 600 && img.height < 600) {
+                                submitForm();
+                            }
                         };
                         img.src = e.target.result;
                     };
@@ -65,38 +70,7 @@
             });
 
             $('#submitButton').click(function () {
-                // Определяем координаты квадрата относительно изображения
-                var scaleX = img.width / canvas.width;
-                var scaleY = img.height / canvas.height;
-                var cropX = squareX * scaleX;
-                var cropY = squareY * scaleY;
-                var cropSize = squareSize * scaleX;
-
-                // Создаем временный холст для обрезки изображения
-                var tempCanvas = document.createElement('canvas');
-                var tempCtx = tempCanvas.getContext('2d');
-                tempCanvas.width = cropSize;
-                tempCanvas.height = cropSize;
-                tempCtx.drawImage(img, cropX, cropY, cropSize, cropSize, 0, 0, cropSize, cropSize);
-
-                // Получаем обрезанное изображение в формате base64
-                var croppedDataUrl = tempCanvas.toDataURL();
-
-                // Преобразуем base64 в Blob
-                var croppedBlob = dataURLtoBlob(croppedDataUrl);
-
-                // Создаем FormData и добавляем в него Blob с обрезанным изображением
-                var formData = new FormData();
-                formData.append('avatar', croppedBlob, 'avatar.png');
-
-                // Отправляем FormData на сервер
-                $.ajax({
-                    url: '/User/ChangeAvatar',
-                    type: 'PUT',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                });
+                submitForm();
             });
 
             $('#cancelButton').click(function () {
@@ -151,6 +125,41 @@
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.drawImage(img, 0, 0);
                 drawSquare();
+            }
+
+            function submitForm() {
+                // Определяем координаты квадрата относительно изображения
+                var scaleX = img.width / canvas.width;
+                var scaleY = img.height / canvas.height;
+                var cropX = squareX * scaleX;
+                var cropY = squareY * scaleY;
+                var cropSize = squareSize * scaleX;
+
+                // Создаем временный холст для обрезки изображения
+                var tempCanvas = document.createElement('canvas');
+                var tempCtx = tempCanvas.getContext('2d');
+                tempCanvas.width = cropSize;
+                tempCanvas.height = cropSize;
+                tempCtx.drawImage(img, cropX, cropY, cropSize, cropSize, 0, 0, cropSize, cropSize);
+
+                // Получаем обрезанное изображение в формате base64
+                var croppedDataUrl = tempCanvas.toDataURL();
+
+                // Преобразуем base64 в Blob
+                var croppedBlob = dataURLtoBlob(croppedDataUrl);
+
+                // Создаем FormData и добавляем в него Blob с обрезанным изображением
+                var formData = new FormData();
+                formData.append('avatar', croppedBlob, 'avatar.png');
+
+                // Отправляем FormData на сервер
+                $.ajax({
+                    url: '/User/ChangeAvatar',
+                    type: 'PUT',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                });
             }
 
             function dataURLtoBlob(dataUrl) {

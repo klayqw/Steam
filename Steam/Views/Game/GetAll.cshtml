@@ -1,36 +1,41 @@
 ﻿@model IEnumerable<Game>
 @{
     ViewData["Title"] = "Get All";
+    string game = string.Empty;
 }
 
+<form method="get" asp-action="Search" asp-controller="Game">
+    <input type="text" asp-for="@game" name="game" placeholder="Search...">
+    <button type="submit" class="btn btn-secondary">Search</button>
+</form>
+
 <div class="d-flex flex-wrap" style="max-height:500px">
-@if(Model is null || Model.Any() == false)
-{
-    <p class="text-white">Nothing is here..</p>
-}
-else
-{
-    foreach(var item in Model)
+    @if (Model is null || !Model.Any())
     {
-        <div class="p-2">
+        <p class="text-white">Nothing is here..</p>
+    }
+    else
+    {
+        foreach (var item in Model)
+        {
+            <div class="p-2">
                 <div class="card bg-dark" style="width: 18rem;" onclick="showGameDetails(@item.Id)">
                     <img src="@item.GameImageUrl" class="card-img-top" alt="Game Image" style="max-height: 400px; max-width: 500px">
                     <div class="card-body" style="max-height:200px; overflow: hidden;">
                         <h5 class="card-title text-white-50">@item.Title</h5>
-                            <p class="card-text text-white-50">@item.Description</p>
-                            <p class="card-text text-white-50">@item.Price</p>
-                    </div>           
+                        <p class="card-text text-white-50">@item.Description</p>
+                        <p class="card-text text-white-50">@item.Price</p>
+                    </div>
                 </div>
                 @if (User.IsInRole("Admin"))
                 {
                     <div>
-                            <button class="btn btn-secondary" onclick="DeleteGame(@item.Id)">Delete</button>
-                            <button class="btn btn-secondary" onclick="UpdateGameView(@item.Id)">Update</button>
+                        <button class="btn btn-secondary" onclick="DeleteGame(@item.Id)">Delete</button>
+                        <button class="btn btn-secondary" onclick="UpdateGameView(@item.Id)">Update</button>
                     </div>
                 }
-        </div>
-
-           
+            </div>
+        }
     }
-}
 </div>
+

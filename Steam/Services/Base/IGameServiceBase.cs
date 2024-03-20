@@ -15,4 +15,5 @@ public interface IGameServiceBase
     public Task DeleteFromLibary(int id,string userid);
     public Task<IEnumerable<Comment>> GetComments(int gameid);
     public Task AddComment(CommentDto commentDTO);
+    public Task<IEnumerable<Game>> Search(string game);
 }

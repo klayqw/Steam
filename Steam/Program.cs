@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Steam.Data;
 using Steam.Middleware;
+using Steam.Models;
 using Steam.Services;
 using Steam.Services.Base;
 using System.Data.SqlClient;
@@ -28,7 +29,7 @@ builder.Services.AddDbContext<SteamDBContext>(dbContextOptionsBuilder => {
     dbContextOptionsBuilder.UseSqlServer(connectionString);
 });
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
+builder.Services.AddIdentity<User, IdentityRole>(options => {
     options.Password.RequiredLength = 8;
     
 }).AddEntityFrameworkStores<SteamDBContext>();

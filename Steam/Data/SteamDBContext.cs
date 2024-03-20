@@ -6,7 +6,7 @@ using Steam.Models.ManyTable;
 
 namespace Steam.Data;
 
-public class SteamDBContext : IdentityDbContext<IdentityUser, IdentityRole, string>
+public class SteamDBContext : IdentityDbContext<User, IdentityRole, string>
 {
     public DbSet<Game> Games { get; set; }
     public DbSet<Group> Groups { get; set; }

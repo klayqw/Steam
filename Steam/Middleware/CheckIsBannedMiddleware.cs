@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Steam.Models;
 using System.Threading.Tasks;
 
 namespace Steam.Middleware
@@ -13,7 +14,7 @@ namespace Steam.Middleware
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext httpContext, UserManager<IdentityUser> _userManager)
+        public async Task InvokeAsync(HttpContext httpContext, UserManager<User> _userManager)
         {
             var user = await _userManager.GetUserAsync(httpContext.User);
             if (user == null)

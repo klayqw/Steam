@@ -14,8 +14,8 @@ public class UserService : IUserServiceBase
 {
 
     private readonly SteamDBContext _dbContext;
-    private readonly UserManager<IdentityUser> userManager;
-    public UserService(SteamDBContext _dbContext,UserManager<IdentityUser> user)
+    private readonly UserManager<User> userManager;
+    public UserService(SteamDBContext _dbContext,UserManager<User> user)
     {
         this._dbContext = _dbContext;
         this.userManager = user;

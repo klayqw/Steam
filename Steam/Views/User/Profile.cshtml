@@ -2,11 +2,27 @@
 @{
     ViewData["Title"] = "Profile";
 }
+<style>
+    .game-item {
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .game-info {
+        flex: 1;
+        color: white;
+    }
+</style>
 
 <div class="container mt-3">
     <div class="row">
         <div class="col-md-4">
-            <!-- Информация о пользователе -->
             <div class="card bg-dark text-white">
                 <img src="@Model.user.AvatarUrl" class="card-img-top" alt="User Avatar"
                      style="max-height:300px; max-width:300px;">
@@ -33,31 +49,34 @@
                     }
                 </div>
             </div>
+
+            <!-- Список игр -->
+            <div class="card bg-dark text-white mt-3" style="width:1200px;">
+                <div class="card-header">Games</div>
+                <div class="card-body">
+                    @if (Model.games is null || !Model.games.Any())
+                    {
+                        <p class="text-white">No games</p>
+                    }
+                    else
+                    {
+                        @foreach (var item in Model.games)
+                        {
+                            <div class="game-item" onclick="GoToWithId('/Game/GetById', '@item.Id')" style="cursor: pointer; background-image: url('@item.GamePreviewUrl');">
+                                <div class="game-info">
+                                    <img src="@item.GameImageUrl" style="max-height:200px;max-width:200px;" />
+                                    <h6 class="card-title">@item.Title</h6>
+                                    <h5 class="card-title">@item.Description</h5>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
         </div>
         <div class="col-md-8">
             <!-- Списки -->
             <div class="row">
-                <div class="col-md-4">
-                    <!-- Список игр -->
-                    <div class="card bg-dark text-white">
-                        <div class="card-header">Games</div>
-                        <ul class="list-group list-group-flush">
-                            @if (Model.games is null || Model.games.Any() == false)
-                            {
-                                <li class="list-group-item bg-dark text-white">No games</li>
-                            }
-                            else
-                            {
-                                foreach (var item in Model.games)
-                                {
-                                    <li class="list-group-item bg-dark text-white" onclick="GoToWithId('/Game/GetById',@item.Id)">
-                                        <img src="@item.GameImageUrl" alt="Game Image" class="mr-2" style="max-height: 50px;max-width: 50px;"> @item.Title
-                                    </li>
-                                }
-                            }
-                        </ul>
-                    </div>
-                </div>
                 <div class="col-md-4">
                     <!-- Список групп -->
                     <div class="card bg-dark text-white">

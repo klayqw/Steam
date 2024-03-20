@@ -117,7 +117,15 @@ public class GameController : Controller
             return RedirectToAction("Error", "ErrorPage", new { message = ex.Message });
         }
        
-      
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> Search(string game)
+    {
+        Console.WriteLine(game);
+        var result = await gameService.Search(game);
+        return View("GetAll", result);
     }
 
     [HttpDelete]

@@ -12,8 +12,8 @@ namespace Steam.Services;
 public class NotificationService : INotificationServiceBase
 {
     private readonly SteamDBContext _dbContext;
-    private readonly UserManager<IdentityUser> userManager;
-    public NotificationService(SteamDBContext dbContext, UserManager<IdentityUser> userManager)
+    private readonly UserManager<User> userManager;
+    public NotificationService(SteamDBContext dbContext, UserManager<User> userManager)
     {
         _dbContext = dbContext;
         this.userManager = userManager;

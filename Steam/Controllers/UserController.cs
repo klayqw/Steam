@@ -13,15 +13,15 @@ namespace Steam.Controllers;
 
 public class UserController : Controller
 {
-    private readonly UserManager<IdentityUser> userManager;
+    private readonly UserManager<User> userManager;
     private readonly RoleManager<IdentityRole> roleManager;
-    private readonly SignInManager<IdentityUser> signInManager;
+    private readonly SignInManager<User> signInManager;
     private readonly IUserServiceBase userService;
     private readonly IFriendService friendService;
 
-    public UserController(UserManager<IdentityUser> userManager,
+    public UserController(UserManager<User> userManager,
       RoleManager<IdentityRole> roleManager,
-      SignInManager<IdentityUser> signInManager,IUserServiceBase userService, IFriendService friendService)
+      SignInManager<User> signInManager,IUserServiceBase userService, IFriendService friendService)
     {
         this.userManager = userManager;
         this.roleManager = roleManager;
@@ -321,7 +321,7 @@ public class UserController : Controller
     {
         using (var image = Image.FromStream(avatar.OpenReadStream()))
         {
-            if (image.Width > 800 || image.Height > 800)
+            if (image.Width > 600 || image.Height > 600)
             {
                 ModelState.AddModelError(string.Empty, "Photo cannot be more than 600 x 600 pixels.");
                 return View("ChangeAvatar");

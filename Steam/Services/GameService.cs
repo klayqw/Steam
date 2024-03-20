@@ -139,5 +139,15 @@ public class GameService : IGameServiceBase
         });
         await _dbContext.SaveChangesAsync();
     }
+
+    public async Task<IEnumerable<Game>> Search(string game)
+    {
+        if(game == string.Empty)
+        {
+            return await _dbContext.Games.ToArrayAsync();
+        }
+        var result = await _dbContext.Games.Where(x => x.Title.Contains(game)).ToArrayAsync();
+        return result;
+    }
 }
 

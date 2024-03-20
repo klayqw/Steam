@@ -10,9 +10,9 @@ namespace Steam.Services;
 public class AdminPanelService : IAdminPanel
 {
     private readonly SteamDBContext steamDBContext;
-    private readonly UserManager<IdentityUser> userManager;
+    private readonly UserManager<User> userManager;
     private readonly RoleManager<IdentityRole> roleManager;
-    public AdminPanelService(SteamDBContext steamDBContext, UserManager<IdentityUser> user,RoleManager<IdentityRole> role) 
+    public AdminPanelService(SteamDBContext steamDBContext, UserManager<User> user,RoleManager<IdentityRole> role) 
     {
         this.steamDBContext = steamDBContext;
         this.userManager = user;
